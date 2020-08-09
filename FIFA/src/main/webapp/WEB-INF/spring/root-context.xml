@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- Service 용 -->
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://rasberry1.cormbfdskqps.ap-northeast-2.rds.amazonaws.com:3306/aop_lsj" />
+        <property name="username" value="admin" />
+        <property name="password" value="rasberry" />
+        <property name="maxActive" value="5" />
+	</bean>
+
+	<!-- Service 용 -->
+	
+	<!-- Test 용 -->
+	<!-- 
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/springdb?serverTimezone=UTC" />
+        <property name="username" value="root" />
+        <property name="password" value="0905" />
+        <property name="maxActive" value="5" />
+	</bean>
+	 -->
+	<!-- Test 용 -->
+	
+	<bean id="FO4visitorSessionDAOImpl" class="com.game.fifa.dao.FO4visitorSessionDAOImpl"></bean>
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	     <property name="dataSource" ref="dataSource"></property>
+	</bean>     
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	     <property name="dataSource" ref="dataSource"></property>
+	   <property name="mapperLocations" value="classpath:mappers/*Mapper.xml"></property>
+	   <!-- <property name="configLocation" value="classpath:/mybatis-config.xml"></property> -->
+	</bean>
+    
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+	     <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+   
+	<context:component-scan base-package="com.game.fifa" />
+
+</beans>

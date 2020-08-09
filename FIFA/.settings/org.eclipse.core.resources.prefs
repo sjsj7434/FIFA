@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/game/fifa/controller/CommonController.java=UTF-8
+encoding//src/main/java/com/game/fifa/controller/PlayerSearchController.java=UTF-8
+encoding//src/main/java/com/game/fifa/controller/UserTradeSearchController.java=UTF-8
+encoding//src/main/webapp/WEB-INF/views/playerSearch.jsp=UTF-8
