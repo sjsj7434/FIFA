@@ -338,7 +338,6 @@
 								<p>전적을<strong>10, 25, 50, 100개</strong>로 표시를 변경할 수 있습니다</p>
 								<p style="color: red;"><strong>50~100개의 데이터는 가져오는데 시간이 걸립니다(10초 이내) 다음, 이전 버튼을 마구 누르면 에러가 발생할 수 있습니다</strong></p>
 								<p style="color: red;"><strong>일부 데이터는 온전하지 않을 수 있습니다</strong></p>
-								<p style="color: red;"><strong>데이터는 Nexon의 시스템에서 가져오므로 "거래날짜"가 동일하게 나올 수 있습니다</strong></p>
 								<p style="color: red;"><strong>*경기 상세 정보 개발중(2020/08/08~)</strong></p>
 							  	<hr class="my-4">
 							</div>

@@ -85,10 +85,6 @@
 						<!-- <grammarly-extension style="position: absolute; top: -3.1875px; left: -3.1875px; pointer-events: none;" class="_1KJtL"></grammarly-extension> -->
 						<form name="sendForm" id="sendForm" method="POST" onsubmit="return false">
 							<div class="form-group" style="text-align: left;">
-								<hr class="my-4">
-								<p class="lead"><strong>사용법${AllVisitor}</strong></p>
-								<p><strong>닉네임</strong>을 입력하여 유저의 전적을 조회합니다</p>
-								<p>전적을<strong>10, 25, 50, 100개</strong>로 표시를 변경할 수 있습니다</p>
 							  	<hr class="my-4">
 							</div>
 							<input type="hidden" name="post_writer" id="post_writer">
