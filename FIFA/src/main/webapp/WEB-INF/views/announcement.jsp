@@ -99,7 +99,6 @@
 								    	<th>번호</th>
 										<th>제목</th>
 										<th>날짜</th>
-										<th>ㅅㄱ</th>
 								    </tr>
 								</thead>
 								<tbody id="userTableTbody">
@@ -107,7 +106,6 @@
 										<td>${announcementList[0].post_title}</td>
 										<td>${announcementList[0].post_contents}</td>
 										<td>${announcementList[0].post_writer}</td>
-										<td><button onclick="test()">butttton</button></td>
 									</tr>
 								</tbody>
 							</table>
