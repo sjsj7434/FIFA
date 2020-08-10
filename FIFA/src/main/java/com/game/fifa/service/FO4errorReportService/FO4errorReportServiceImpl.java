@@ -1,11 +1,11 @@
-package com.game.fifa.service;
+package com.game.fifa.service.FO4errorReportService;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.game.fifa.dao.FO4errorReportDAO;
+import com.game.fifa.dao.FO4errorReportDAO.FO4errorReportDAO;
 import com.game.fifa.vo.FO4errorReportVO;
 
 @Service

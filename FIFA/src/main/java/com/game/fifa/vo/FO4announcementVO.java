@@ -3,13 +3,21 @@ package com.game.fifa.vo;
 import java.sql.Timestamp;
 
 public class FO4announcementVO {
+	String post_id;
 	String post_title;
 	String post_contents;
 	String post_writer;
 	Timestamp post_write_date;
 	String post_type;
-	int offset;
-	int limit;
+	int offset = 0;
+
+	public String getPost_id() {
+		return post_id;
+	}
+
+	public void setPost_id(String post_id) {
+		this.post_id = post_id;
+	}
 
 	public int getOffset() {
 		return offset;
@@ -17,14 +25,6 @@ public class FO4announcementVO {
 
 	public void setOffset(int offset) {
 		this.offset = offset;
-	}
-
-	public int getLimit() {
-		return limit;
-	}
-
-	public void setLimit(int limit) {
-		this.limit = limit;
 	}
 
 	public String getPost_title() {

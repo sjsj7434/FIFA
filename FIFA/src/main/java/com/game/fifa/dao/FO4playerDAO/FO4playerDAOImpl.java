@@ -1,4 +1,4 @@
-package com.game.fifa.dao;
+package com.game.fifa.dao.FO4playerDAO;
 
 import java.util.List;
 

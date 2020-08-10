@@ -1,4 +1,4 @@
-package com.game.fifa.dao;
+package com.game.fifa.dao.FO4announcementDAO;
 
 import java.util.List;
 
@@ -24,6 +24,11 @@ public class FO4announcementDAOImpl implements FO4announcementDAO{
 	@Override
 	public List<FO4announcementVO> selectAnnonucementList(FO4announcementVO announcementVO) {
 		return sqlSession.selectList(mapperNamespace + "selectAnnouncementList", announcementVO);
+	}
+
+	@Override
+	public int selectCountAnnouncementList() {
+		return sqlSession.selectOne(mapperNamespace + "selectCountAnnouncementList");
 	}
 
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.game.fifa.customClass.MatchInfoAPI;
 import com.game.fifa.customClass.UserInfoAPI;
-import com.game.fifa.service.FO4visitorSessionService;
+import com.game.fifa.service.FO4visitorSessionService.FO4visitorSessionService;
 
 @Controller
 public class UserMatchSearchController {

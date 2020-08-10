@@ -11,7 +11,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.game.fifa.dao.FO4visitorSessionDAO;
+import com.game.fifa.dao.FO4visitorSessionDAO.FO4visitorSessionDAO;
 import com.game.fifa.vo.FO4visitorSessionVO;
 
 public class VisitorSessionListener implements HttpSessionListener{

@@ -26,8 +26,45 @@
 			userSearchAjax(0);
 		}
    		
-		function userSearchAjax(paging) {
+		function pagination(page) {
+			drawPagination(page);
 			
+			var id = Number(page)+Number(1);
+			$("#pageButton"+id).addClass("active");
+			//removeClass()
+			$("#offset").val(page*10);
+			var form = $("#sendForm").serialize();
+			$.ajax({
+				url:"announcementPagination",
+				data:form,
+				type:"POST",
+				success:function(announcementList){
+					var html = "";
+					for(index in announcementList) {
+						html += "<tr id=" + announcementList[index].post_id + ">";
+							html += "<td>";
+								html += Number(index) + Number(1) + Number($("#offset").val());
+							html += "</td>";
+							html += "<td>";
+								html += announcementList[index].post_title;
+							html += "</td>";
+							html += "<td>";
+								html += announcementList[index].post_write_date;
+							html += "</td>";
+						html += "</tr>";
+					}
+					
+					$(userTableTbody).html(html);
+				},
+				error:function(exception){
+					alert(exception);
+				}
+			});
+		}
+		
+		function previousNextPage(offset) {
+			$("#offset").val(offset);
+			$("#sendForm").submit();
 		}
 	</script>
 	<style>
@@ -82,68 +119,116 @@
 		    	<h1 style="font-size: 60px;">공지사항</h1>
 				<div style="margin-top:15px;" id="errorFormArea">
 					<div class="bd-example">
-						<!-- <grammarly-extension style="position: absolute; top: -3.1875px; left: -3.1875px; pointer-events: none;" class="_1KJtL"></grammarly-extension> -->
-						<form name="sendForm" id="sendForm" method="POST" onsubmit="return false">
-							<div class="form-group" style="text-align: left;">
-							  	<hr class="my-4">
-							</div>
-							<input type="hidden" name="post_writer" id="post_writer">
-							
+						<form action="announcement" name="sendForm" id="sendForm" method="POST">
+							<input type="hidden" name="offset" id="offset" value="${offset}">
+							<%-- <input type="hidden" name="currentPage" id="currentPage" value="${currentPage}"> --%>
+
 							<table class="table">
 								<thead>
 								    <tr>
 								    	<th>번호</th>
 										<th>제목</th>
-										<th>날짜</th>
+										<th>작성일</th>
 								    </tr>
 								</thead>
 								<tbody id="userTableTbody">
-									<tr>
-										<td>${announcementList[0].post_title}</td>
-										<td>${announcementList[0].post_contents}</td>
-										<td>${announcementList[0].post_writer}</td>
-									</tr>
+									<c:forEach items="${announcementList}" var="item" varStatus="status">
+										<tr id="${item.post_id}" onclick="alert(${item.post_id})" style="cursor:pointer;">
+											<td>${status.count + offset}</td>
+											<td>${item.post_title}</td>
+											<td>${item.post_write_date}</td>
+										</tr>
+									</c:forEach>
 								</tbody>
 							</table>
-							<script type="text/javascript">
-								function test() {
-									console.log(${announcementList.size()});
-									for(var i = 0; i < ${announcementList.size()}; i++){
-										console.log(i);
-										console.log(${announcementList[i].post_contents});
-									}
-								}
-							</script>
 						</form>
 					</div>
 				</div>
 				
-				<nav aria-label="Page navigation example" style="padding-top: 20px;">
-					<ul class="pagination justify-content-center">
-						<li class="page-item">
-							<a class="page-link" href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-								<span class="sr-only">Previous</span>
-							</a>
-						</li>
-						<li class="page-item"><a class="page-link" href="#">1</a></li>
-						<li class="page-item">
-							<a class="page-link" href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-								<span class="sr-only">Next</span>
-							</a>
-						</li>
-					</ul>
+				<nav id="paginationNav" aria-label="Page navigation example" style="padding-top: 20px;">
+					<script type="text/javascript">
+						drawPagination(0);
+						
+						function drawPagination(initValue) {
+							var html = "";
+							var off = $("#offset").val();
+							var index = 0;
+							
+							html +="<ul class='pagination justify-content-center'>";
+								if(${pagination < 11}){
+									html +="<li class='page-item disabled'>";
+										html +="<a class='page-link' aria-label='Previous'><span aria-hidden='true'>&laquo;</span>";
+										html +="</a>";
+									html +="</li>";
+								}
+								else{
+									if((off-100) < 0){
+										html +="<li class='page-item disabled'>";
+											html +="<a class='page-link' aria-label='Previous'><span aria-hidden='true'>&laquo;</span>";
+											html +="</a>";
+										html +="</li>";
+									}
+									else{
+										var backOffset = (parseInt(off/100) - 1)*100;
+										html +="<li class='page-item'>";
+											html +="<a class='page-link' aria-label='Previous' href='javascript:previousNextPage(" + backOffset + ")'><span aria-hidden='true'>&laquo;</span>";
+											html +="</a>";
+										html +="</li>";
+									}
+								}
+								
+								for(index = ${offset/10}; index < ${pagination}; index++){
+									if(initValue == 0){
+										if(index == ${offset/10}){
+											html +="<li class='page-item active' id='pageButton" + (index+1) + "'>";
+												html +="<a class='page-link' href='javascript:pagination(" + index + ")'>" + (index+1) + "</a>";
+											html +="</li>";
+										}
+										else{
+											html +="<li class='page-item' id='pageButton" + (index+1) + "'>";
+												html +="<a class='page-link' href='javascript:pagination(" + index + ")'>" + (index+1) + "</a>";
+											html +="</li>";
+										}
+									}
+									else{
+										if(initValue == index){
+											html +="<li class='page-item active' id='pageButton" + (index+1) + "'>";
+												html +="<a class='page-link' href='javascript:pagination(" + index + ")'>" + (index+1) + "</a>";
+											html +="</li>";
+										}
+										else{
+											html +="<li class='page-item' id='pageButton" + (index+1) + "'>";
+												html +="<a class='page-link' href='javascript:pagination(" + index + ")'>" + (index+1) + "</a>";
+											html +="</li>";
+										}
+									}
+									
+									off = (index + 1)*10;
+									if(index == ${offset/10 + 9}){
+										break;
+									}
+								}
+								
+								if(index == ${pagination}){
+									html +="<li class='page-item disabled'>";
+										html +="<a class='page-link' aria-label='Next'><span aria-hidden='true'>&raquo;</span>";
+										html +="</a>";
+									html +="</li>";
+								}
+								else{
+									html +="<li class='page-item'>";
+										html +="<a class='page-link' aria-label='Next' href='javascript:previousNextPage(" + off + ")'><span aria-hidden='true'>&raquo;</span>";
+										html +="</a>";
+									html +="</li>";
+								}
+							html +="</ul>";
+							
+							$("#paginationNav").html(html);
+						}
+					</script>
 				</nav>
 				
 			</div>
-		</div>
-		
-		<div>
-			<form name="sendForm" method="GET">
-				<input type="hidden" name="nickName" id="nickName" value="">
-				<input type="hidden" name="matchtype" id="matchtype" value="50">
-				<input type="hidden" name="offset" id="offset" value="0">
-				<input type="hidden" name="limit" id="limit" value="100">
-			</form>
 		</div>
 	</main>
 	

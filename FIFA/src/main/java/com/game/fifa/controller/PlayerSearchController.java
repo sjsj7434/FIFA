@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.game.fifa.service.FO4playerService;
-import com.game.fifa.service.FO4visitorSessionService;
+import com.game.fifa.service.FO4playerService.FO4playerService;
+import com.game.fifa.service.FO4visitorSessionService.FO4visitorSessionService;
 import com.game.fifa.vo.FO4playerVO;
 
 @Controller

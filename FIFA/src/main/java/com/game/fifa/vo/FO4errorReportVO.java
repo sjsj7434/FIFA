@@ -3,14 +3,23 @@ package com.game.fifa.vo;
 import java.sql.Timestamp;
 
 public class FO4errorReportVO {
+	String post_id;
 	String post_title;
 	String post_contents;
 	String post_writer;
 	Timestamp post_write_date;
 	String post_type;
 	String locale;
-	int offset;
-	int limit;
+	int offset = 0;
+	int limit = 10;
+
+	public String getPost_id() {
+		return post_id;
+	}
+
+	public void setPost_id(String post_id) {
+		this.post_id = post_id;
+	}
 
 	public int getOffset() {
 		return offset;

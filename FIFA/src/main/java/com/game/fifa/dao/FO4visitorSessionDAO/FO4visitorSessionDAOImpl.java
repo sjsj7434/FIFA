@@ -1,4 +1,4 @@
-package com.game.fifa.dao;
+package com.game.fifa.dao.FO4visitorSessionDAO;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
