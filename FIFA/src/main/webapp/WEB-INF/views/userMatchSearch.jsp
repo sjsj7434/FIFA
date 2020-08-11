@@ -14,6 +14,8 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
 	
     <script type="text/javascript">
+    	var datGlobal = null;
+    	
    		function numberFormat(inputNumber) {
     	   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     	}
@@ -125,6 +127,9 @@
 				        type:'GET',
 				        data: queryString,
 				        success:function(data){
+				        	console.log(data);
+				        	datGlobal = data;
+
 				        	if(data[0].userFindByNickNameCode != '200'){
 				        		alert('정보가 없거나, 비정상적인 호출입니다');
 				        	}
@@ -168,36 +173,31 @@
 					            		var htmlMatch = '';
 							            for(var i = 0; i < length-1; i++){
 							            	if(data[0].accessId == data[3][i].matchInfo[0].accessId){
-							            		htmlMatch += '<tr onclick="userMatchClick(' + '\'' + data[3][i].matchInfo[0].nickname + '\'' + ')" style="cursor:pointer;">';
+							            		htmlMatch += '<tr onclick="userMatchClick(' + i + ')" style="cursor:pointer;">';
 									            	htmlMatch += "<td>" + data[3][i].matchDate.replace('T', " ") + "</td>";
 									            	
-									            	if(data[3][i].matchInfo[0].matchDetail.matchEndType == 0){
-									            		htmlMatch += "<td>" + data[3][i].matchInfo[0].matchDetail.matchResult + "</td>";
+									            	if(data[3][i].matchInfo[0].matchDetail.matchResult == '승'){
+									            		htmlMatch += "<td style='color: blue;'>" + data[3][i].matchInfo[0].nickname + "</td>";
 									            	}
-									            	else if(data[3][i].matchInfo[0].matchDetail.matchEndType == 1){
-									            		htmlMatch += "<td>" + "몰수승" + "</td>";
+									            	else if(data[3][i].matchInfo[0].matchDetail.matchResult == '무'){
+									            		htmlMatch += "<td style='color: black;'>" + data[3][i].matchInfo[0].nickname + "</td>";
 									            	}
 									            	else{
-									            		htmlMatch += "<td>" + "몰수패" + "</td>";
+									            		htmlMatch += "<td style='color: red;'>" + data[3][i].matchInfo[0].nickname + "</td>";
 									            	}
-									            	
-									            	htmlMatch += "<td>" + data[3][i].matchInfo[0].nickname + "</td>";
 									            	
 									            	if(data[3][i].matchInfo.length > 1){
 									            		htmlMatch += "<td>" + data[3][i].matchInfo[0].shoot.goalTotal + " : " + data[3][i].matchInfo[1].shoot.goalTotal + "</td>";
 										        		
-									            		htmlMatch += "<td>" + data[3][i].matchInfo[1].nickname + "</td>";
-									            		
-										        		if(data[3][i].matchInfo[1].matchDetail.matchEndType == 0){
-										        			htmlMatch += "<td>" + data[3][i].matchInfo[1].matchDetail.matchResult + "</td>";
+									            		if(data[3][i].matchInfo[1].matchDetail.matchResult == '승'){
+										            		htmlMatch += "<td style='color: blue;'>" + data[3][i].matchInfo[1].nickname + "</td>";
 										            	}
-										            	else if(data[3][i].matchInfo[1].matchDetail.matchEndType == 1){
-										            		htmlMatch += "<td>" + "몰수승" + "</td>";
+									            		else if(data[3][i].matchInfo[1].matchDetail.matchResult == '무'){
+										            		htmlMatch += "<td style='color: black;'>" + data[3][i].matchInfo[1].nickname + "</td>";
 										            	}
 										            	else{
-										            		htmlMatch += "<td>" + "몰수패" + "</td>";
+										            		htmlMatch += "<td style='color: red;'>" + data[3][i].matchInfo[1].nickname + "</td>";
 										            	}
-										        		
 									            	}
 									            	else{
 									            		htmlMatch += "<td>" + data[3][i].matchInfo[0].shoot.goalTotal + " : " + "0" + "</td>";
@@ -208,21 +208,21 @@
 								        		htmlMatch += "</tr>";
 						            		}
 						            		else{
-						            			htmlMatch += '<tr onclick="userMatchClick(' + '\'' + data[3][i].matchInfo[0].nickname + '\'' + ')" style="cursor:pointer;">';
+						            			htmlMatch += '<tr onclick="userMatchClick(' + i + ')" style="cursor:pointer;">';
 									            	htmlMatch += "<td>" + data[3][i].matchDate.replace('T', " ") + "</td>";
 									            	
 									            	if(data[3][i].matchInfo.length > 1){
-									            		if(data[3][i].matchInfo[1].matchDetail.matchEndType == 0){
-										        			htmlMatch += "<td>" + data[3][i].matchInfo[1].matchDetail.matchResult + "</td>";
+									            		
+									            		if(data[3][i].matchInfo[1].matchDetail.matchResult == '승'){
+										            		htmlMatch += "<td style='color: blue;'>" + data[3][i].matchInfo[1].nickname + "</td>";
 										            	}
-										            	else if(data[3][i].matchInfo[1].matchDetail.matchEndType == 1){
-										            		htmlMatch += "<td>" + "몰수승" + "</td>";
+									            		else if(data[3][i].matchInfo[1].matchDetail.matchResult == '무'){
+										            		htmlMatch += "<td style='color: black;'>" + data[3][i].matchInfo[1].nickname + "</td>";
 										            	}
 										            	else{
-										            		htmlMatch += "<td>" + "몰수패" + "</td>";
+										            		htmlMatch += "<td style='color: red;'>" + data[3][i].matchInfo[1].nickname + "</td>";
 										            	}
 										            	
-										            	htmlMatch += "<td>" + data[3][i].matchInfo[1].nickname + "</td>";
 										        		htmlMatch += "<td>" + data[3][i].matchInfo[1].shoot.goalTotal + " : " + data[3][i].matchInfo[0].shoot.goalTotal + "</td>";
 									            	}
 									            	else{
@@ -231,18 +231,16 @@
 										        		htmlMatch += "<td>" + "0" + " : " + data[3][i].matchInfo[0].shoot.goalTotal + "</td>";
 									            	}
 									            	
-									            	htmlMatch += "<td>" + data[3][i].matchInfo[0].nickname + "</td>";
-									        		
-									        		if(data[3][i].matchInfo[0].matchDetail.matchEndType == 0){
-									            		htmlMatch += "<td>" + data[3][i].matchInfo[0].matchDetail.matchResult + "</td>";
+									            	if(data[3][i].matchInfo[0].matchDetail.matchResult == '승'){
+									            		htmlMatch += "<td style='color: blue;'>" + data[3][i].matchInfo[0].nickname + "</td>";
 									            	}
-									            	else if(data[3][i].matchInfo[0].matchDetail.matchEndType == 1){
-									            		htmlMatch += "<td>" + "몰수승" + "</td>";
+									            	else if(data[3][i].matchInfo[0].matchDetail.matchResult == '무'){
+									            		htmlMatch += "<td style='color: black;'>" + data[3][i].matchInfo[0].nickname + "</td>";
 									            	}
 									            	else{
-									            		htmlMatch += "<td>" + "몰수패" + "</td>";
+									            		htmlMatch += "<td style='color: red;'>" + data[3][i].matchInfo[0].nickname + "</td>";
 									            	}
-									            	
+									        		
 								        		htmlMatch += "</tr>";
 						            		}
 							            }
@@ -275,8 +273,38 @@
 			}
 		}
 		
-		function userMatchClick(match) {
-			$("#modalContents").html(match);
+		function userMatchClick(i) {
+			$("#modalContents").empty();
+			
+			console.log(datGlobal[3][i]);
+			
+			$("#user0Nickname").html(datGlobal[3][i].matchInfo[0].nickname);
+			$("#user0Nickname").append(' [' + datGlobal[3][i].matchInfo[0].matchDetail.matchResult + ']');
+			$("#user0Goal").html(datGlobal[3][i].matchInfo[0].shoot.goalTotal);
+			$("#user0Shoot").html(datGlobal[3][i].matchInfo[0].shoot.shootTotal);
+			$("#user0EffectiveShoot").html(datGlobal[3][i].matchInfo[0].shoot.effectiveShootTotal);
+			$("#user0PassSuccess").html(datGlobal[3][i].matchInfo[0].pass.passSuccess / datGlobal[3][i].matchInfo[0].pass.passTry);
+			$("#user0CornerKick").html(datGlobal[3][i].matchInfo[0].matchDetail.cornerKick);
+			$("#user0TackleSuccess").html(datGlobal[3][i].matchInfo[0].defence.tackleSuccess);
+			$("#user0Foul").html(datGlobal[3][i].matchInfo[0].matchDetail.foul);
+			$("#user0YellowCard").html(datGlobal[3][i].matchInfo[0].matchDetail.yellowCards);
+			$("#user0RedCard").html(datGlobal[3][i].matchInfo[0].matchDetail.redCards);
+			$("#user0Injury").html(datGlobal[3][i].matchInfo[0].matchDetail.injury);
+			//$("#user0Injury").html(datGlobal[3][i].matchInfo[0].matchDetail.systemPause);
+			
+			$("#user1Nickname").html(datGlobal[3][i].matchInfo[1].nickname);
+			$("#user1Nickname").append(' [' + datGlobal[3][i].matchInfo[1].matchDetail.matchResult + ']');
+			$("#user1Goal").html(datGlobal[3][i].matchInfo[1].shoot.goalTotal);
+			$("#user1Shoot").html(datGlobal[3][i].matchInfo[1].shoot.shootTotal);
+			$("#user1EffectiveShoot").html(datGlobal[3][i].matchInfo[1].shoot.effectiveShootTotal);
+			$("#user1PassSuccess").html(datGlobal[3][i].matchInfo[1].pass.passSuccess / datGlobal[3][i].matchInfo[1].pass.passTry);
+			$("#user1CornerKick").html(datGlobal[3][i].matchInfo[1].matchDetail.cornerKick);
+			$("#user1TackleSuccess").html(datGlobal[3][i].matchInfo[1].defence.tackleSuccess);
+			$("#user1Foul").html(datGlobal[3][i].matchInfo[1].matchDetail.foul);
+			$("#user1YellowCard").html(datGlobal[3][i].matchInfo[1].matchDetail.yellowCards);
+			$("#user1RedCard").html(datGlobal[3][i].matchInfo[1].matchDetail.redCards);
+			$("#user1Injury").html(datGlobal[3][i].matchInfo[1].matchDetail.injury);
+			
 			$("#myModal").modal('show');
 		}
 	</script>
@@ -412,10 +440,8 @@
 					<thead class="thead-light">
 						<tr>
 							<th>날짜</th>
-							<th>승패</th>
 							<th>닉네임</th>
 							<th>스코어</th>
-							<th>승패</th>
 							<th>닉네임</th>
 						</tr>
 					</thead>
@@ -446,21 +472,81 @@
 		</div>
 	</footer>
 	
-	<div class="modal" id="myModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
+	<div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
+			
 				<div class="modal-header">
-					<h5 class="modal-title">MATCH DETAIL</h5>
+					<h5 class="modal-title" id="modalTitle">경기 상세 정보</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body" id="modalContents">
+				
+				<div class="modal-body">
+					<main role="main" class="">
+						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+							<div class="col" id="user0Nickname" style="font-size: large; font-weight: bold;">0</div>
+							<div class="col"></div>
+							<div class="col" id="user1Nickname" style="font-size: large; font-weight: bold;">1</div>
+						</div>
+						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+							<div class="col" id="user0Goal" style="background-color: #F0EEED;">0</div>
+							<div class="col" style="background-color: #BCB7B6;">골</div>
+							<div class="col" id="user1Goal" style="background-color: #F0EEED;">1</div>
+						</div>
+						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+							<div class="col" id="user0Shoot" style="background-color: #F0EEED;">0</div>
+							<div class="col" style="background-color: #BCB7B6;">슛</div>
+							<div class="col" id="user1Shoot" style="background-color: #F0EEED;">1</div>
+						</div>
+						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+							<div class="col" id="user0EffectiveShoot" style="background-color: #F0EEED;">0</div>
+							<div class="col" style="background-color: #BCB7B6;">유효슛</div>
+							<div class="col" id="user1EffectiveShoot" style="background-color: #F0EEED;">1</div>
+						</div>
+						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+							<div class="col" id="user0PassSuccess" style="background-color: #F0EEED;">0</div>
+							<div class="col" style="background-color: #BCB7B6;">패스 성공률</div>
+							<div class="col" id="user1PassSuccess" style="background-color: #F0EEED;">1</div>
+						</div>
+						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+							<div class="col" id="user0CornerKick" style="background-color: #F0EEED;">0</div>
+							<div class="col" style="background-color: #BCB7B6;">코너킥</div>
+							<div class="col" id="user1CornerKick" style="background-color: #F0EEED;">1</div>
+						</div>
+						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+							<div class="col" id="user0TackleSuccess" style="background-color: #F0EEED;">0</div>
+							<div class="col" style="background-color: #BCB7B6;">태클</div>
+							<div class="col" id="user1TackleSuccess" style="background-color: #F0EEED;">1</div>
+						</div>
+						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+							<div class="col" id="user0Foul" style="background-color: #F0EEED;">0</div>
+							<div class="col" style="background-color: #BCB7B6;">파울</div>
+							<div class="col" id="user1Foul" style="background-color: #F0EEED;">1</div>
+						</div>
+						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+							<div class="col" id="user0YellowCards" style="background-color: #F0EEED;">0</div>
+							<div class="col" style="background-color: #BCB7B6;">경고</div>
+							<div class="col" id="user1YellowCards" style="background-color: #F0EEED;">1</div>
+						</div>
+						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+							<div class="col" id="user0RedCards" style="background-color: #F0EEED;">0</div>
+							<div class="col" style="background-color: #BCB7B6;">퇴장</div>
+							<div class="col" id="user1RedCards" style="background-color: #F0EEED;">1</div>
+						</div>
+						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+							<div class="col" id="user0Injury" style="background-color: #F0EEED;">0</div>
+							<div class="col" style="background-color: #BCB7B6;">부상</div>
+							<div class="col" id="user1Injury" style="background-color: #F0EEED;">1</div>
+						</div>
+					</main>
 				</div>
+				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 				</div>
+				
 			</div>
 		</div>
 	</div>
