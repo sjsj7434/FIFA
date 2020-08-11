@@ -23,10 +23,15 @@ public class FO4announcementServiceImpl implements FO4announcementService{
 	public List<FO4announcementVO> selectAnnouncementList(FO4announcementVO announcementVO) {
 		return announcementDAO.selectAnnonucementList(announcementVO);
 	}
+	
+	@Override
+	public FO4announcementVO selectAnnouncementOne(FO4announcementVO announcementVO) {
+		return announcementDAO.selectAnnouncementOne(announcementVO);
+	}
 
 	@Override
 	public int selectCountAnnouncementList() {
 		return announcementDAO.selectCountAnnouncementList();
 	}
-	
+
 }

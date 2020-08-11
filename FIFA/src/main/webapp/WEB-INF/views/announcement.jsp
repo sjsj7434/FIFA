@@ -41,7 +41,7 @@
 				success:function(announcementList){
 					var html = "";
 					for(index in announcementList) {
-						html += "<tr id=" + announcementList[index].post_id + ">";
+						html += "<tr id='" + announcementList[index].post_id + "' onclick='announcementPostClick(" + announcementList[index].post_id + ")' style='cursor:pointer;'>";
 							html += "<td>";
 								html += Number(index) + Number(1) + Number($("#offset").val());
 							html += "</td>";
@@ -64,7 +64,28 @@
 		
 		function previousNextPage(offset) {
 			$("#offset").val(offset);
+			$("#sendForm").attr("action", "announcement");
 			$("#sendForm").submit();
+		}
+		
+		function announcementPostClick(postId) {
+			$("#post_id").val(postId);
+			var form = $("#sendForm").serialize();
+			$.ajax({
+				url:"announcementPostView",
+				data:form,
+				type:"POST",
+				success:function(data){
+					$('#modalTitle').html(data.post_title);
+					$('#modalWriteDate').html('작성일 : ' + data.post_write_date);
+					$('#modalContents').html(data.post_contents);
+					$('#myModal').modal('show');
+				},
+				error:function(error){
+					$('#modalTitle').html("에러가 발생했습니다");
+					$('#myModal').modal('show');
+				}
+			});
 		}
 	</script>
 	<style>
@@ -119,9 +140,9 @@
 		    	<h1 style="font-size: 60px;">공지사항</h1>
 				<div style="margin-top:15px;" id="errorFormArea">
 					<div class="bd-example">
-						<form action="announcement" name="sendForm" id="sendForm" method="POST">
+						<form name="sendForm" id="sendForm" method="POST">
 							<input type="hidden" name="offset" id="offset" value="${offset}">
-							<%-- <input type="hidden" name="currentPage" id="currentPage" value="${currentPage}"> --%>
+							<input type="hidden" name="post_id" id="post_id" value="">
 
 							<table class="table">
 								<thead>
@@ -133,7 +154,7 @@
 								</thead>
 								<tbody id="userTableTbody">
 									<c:forEach items="${announcementList}" var="item" varStatus="status">
-										<tr id="${item.post_id}" onclick="alert(${item.post_id})" style="cursor:pointer;">
+										<tr id="${item.post_id}" onclick="announcementPostClick(${item.post_id})" style="cursor:pointer;">
 											<td>${status.count + offset}</td>
 											<td>${item.post_title}</td>
 											<td>${item.post_write_date}</td>
@@ -243,21 +264,27 @@
 		</div>
 	</footer>
 	
-	<div class="modal" id="myModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
+	<div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
+			
 				<div class="modal-header">
-					<h5 class="modal-title">WARNING!</h5>
+					<h5 class="modal-title" id="modalTitle"></h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
+				
 				<div class="modal-body">
-					<p>제목, 내용을 입력해주세요</p>
+					<p id="modalWriteDate" style="text-align: right;"></p>
+					<hr>
+					<p id="modalContents" style="text-align: left;"></p>
 				</div>
+				
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 				</div>
+				
 			</div>
 		</div>
 	</div>

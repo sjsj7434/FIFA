@@ -25,6 +25,11 @@ public class FO4announcementDAOImpl implements FO4announcementDAO{
 	public List<FO4announcementVO> selectAnnonucementList(FO4announcementVO announcementVO) {
 		return sqlSession.selectList(mapperNamespace + "selectAnnouncementList", announcementVO);
 	}
+	
+	@Override
+	public FO4announcementVO selectAnnouncementOne(FO4announcementVO announcementVO) {
+		return sqlSession.selectOne(mapperNamespace + "selectAnnouncementOne", announcementVO);
+	}
 
 	@Override
 	public int selectCountAnnouncementList() {

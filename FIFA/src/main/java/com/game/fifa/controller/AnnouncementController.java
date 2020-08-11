@@ -30,12 +30,12 @@ public class AnnouncementController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/announcement", method = {RequestMethod.GET, RequestMethod.POST})
 	public String announcement(Model model, FO4announcementVO announcementVO) {
-	//방문자 관련
+	//방문자 counter 관련
 		int countAllVisitors = visitorSessionService.countAllVisitors();
 		model.addAttribute("countAllVisitors", countAllVisitors);
 		int countTodayVisitors = visitorSessionService.countTodayVisitors();
 		model.addAttribute("countTodayVisitors", countTodayVisitors);
-	//방문자 관련
+	//방문자 counter 관련
 		
 	//공지사항 관련
 		List<FO4announcementVO> announcementList = announcementService.selectAnnouncementList(announcementVO);
@@ -56,10 +56,11 @@ public class AnnouncementController {
 			json.put("post_write_date", dateFormat.format(announcementList.get(index).getPost_write_date()));
 			jsonArray.add(json);
 		}
+	//공지사항 관련
+	
 		model.addAttribute("announcementList", jsonArray);
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("offset", announcementVO.getOffset());
-	//공지사항 관련
 		
 		return "announcement";
 	}
@@ -68,7 +69,7 @@ public class AnnouncementController {
 	@RequestMapping(value = "/announcementPagination", method = RequestMethod.POST)
 	@ResponseBody
 	public JSONArray announcementPagination(FO4announcementVO announcementVO, HttpServletRequest request) throws ParseException {
-	//공지사항 관련
+	//공지사항 페이징 관련
 		List<FO4announcementVO> announcementList = announcementService.selectAnnouncementList(announcementVO);
 		JSONArray jsonArray = new JSONArray();
 		for(int index = 0; index < announcementList.size(); index++) {
@@ -79,8 +80,29 @@ public class AnnouncementController {
 			json.put("post_write_date", dateFormat.format(announcementList.get(index).getPost_write_date()));
 			jsonArray.add(json);
 		}
-	//공지사항 관련
+	//공지사항 페이징 관련
 		
 		return jsonArray;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/announcementPostView", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONObject announcementPostView(FO4announcementVO announcementVO, HttpServletRequest request) throws ParseException {
+	//공지사항 읽기 관련
+		FO4announcementVO announcementPost = announcementService.selectAnnouncementOne(announcementVO);
+		JSONObject json = new JSONObject();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		if(announcementPost != null) {
+			json.put("post_id", announcementPost.getPost_id());
+			json.put("post_title", announcementPost.getPost_title());
+			json.put("post_contents", announcementPost.getPost_contents());
+			json.put("post_write_date", dateFormat.format(announcementPost.getPost_write_date()));
+			json.put("post_type", announcementPost.getPost_type());
+		}
+	//공지사항 읽기 관련
+		
+		return json;
 	}
 }

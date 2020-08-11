@@ -167,9 +167,8 @@
 					            	if(data[2][length-1].findMatchByAccessIdCode == 200){
 					            		var htmlMatch = '';
 							            for(var i = 0; i < length-1; i++){
-							            		/* console.log(data[3][i].matchInfo.length); */
 							            	if(data[0].accessId == data[3][i].matchInfo[0].accessId){
-							            		htmlMatch += "<tr>";
+							            		htmlMatch += '<tr onclick="userMatchClick(' + '\'' + data[3][i].matchInfo[0].nickname + '\'' + ')" style="cursor:pointer;">';
 									            	htmlMatch += "<td>" + data[3][i].matchDate.replace('T', " ") + "</td>";
 									            	
 									            	if(data[3][i].matchInfo[0].matchDetail.matchEndType == 0){
@@ -209,7 +208,7 @@
 								        		htmlMatch += "</tr>";
 						            		}
 						            		else{
-						            			htmlMatch += "<tr>";
+						            			htmlMatch += '<tr onclick="userMatchClick(' + '\'' + data[3][i].matchInfo[0].nickname + '\'' + ')" style="cursor:pointer;">';
 									            	htmlMatch += "<td>" + data[3][i].matchDate.replace('T', " ") + "</td>";
 									            	
 									            	if(data[3][i].matchInfo.length > 1){
@@ -255,7 +254,7 @@
 					            	var htmlMatch = '';
 							            htmlMatch += "<tr>";
 							            	htmlMatch += "<td>" + (1) + "</td>";
-							        		htmlMatch += "<td>판매 정보가 없습니다</td>";
+							        		htmlMatch += "<td>경기 정보가 없습니다</td>";
 							        	htmlMatch += "</tr>";
 						            $("#matchTableTbody").empty();
 						            $("#matchTableTbody").append(htmlMatch);
@@ -264,7 +263,6 @@
 				        	}
 				        },
 				        error:function(request, status, error){
-				        	/* alert("응답코드:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); */
 				        	if(request.status == 500){
 				        		alert("응답코드:"+request.status+"\n내용:"+"넥슨 서버 내부 에러");
 				        	}
@@ -275,6 +273,11 @@
 				    });
 				}
 			}
+		}
+		
+		function userMatchClick(match) {
+			$("#modalContents").html(match);
+			$("#myModal").modal('show');
 		}
 	</script>
 	<style>
@@ -447,13 +450,12 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">WARNING!</h5>
+					<h5 class="modal-title">MATCH DETAIL</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body">
-					<p>제목, 내용을 입력해주세요</p>
+				<div class="modal-body" id="modalContents">
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"

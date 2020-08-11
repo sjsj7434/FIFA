@@ -7,5 +7,6 @@ import com.game.fifa.vo.FO4announcementVO;
 public interface FO4announcementService {
 	public void insertAnnouncement(FO4announcementVO announcementVO);
 	public List<FO4announcementVO> selectAnnouncementList(FO4announcementVO announcementVO);
+	public FO4announcementVO selectAnnouncementOne(FO4announcementVO announcementVO);
 	public int selectCountAnnouncementList();
 }
