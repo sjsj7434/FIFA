@@ -283,27 +283,28 @@
 			$("#user0Goal").html(datGlobal[3][i].matchInfo[0].shoot.goalTotal);
 			$("#user0Shoot").html(datGlobal[3][i].matchInfo[0].shoot.shootTotal);
 			$("#user0EffectiveShoot").html(datGlobal[3][i].matchInfo[0].shoot.effectiveShootTotal);
-			$("#user0PassSuccess").html(datGlobal[3][i].matchInfo[0].pass.passSuccess / datGlobal[3][i].matchInfo[0].pass.passTry);
+			$("#user0PassSuccess").html((datGlobal[3][i].matchInfo[0].pass.passSuccess / datGlobal[3][i].matchInfo[0].pass.passTry * 100).toFixed(2) + ' %');
 			$("#user0CornerKick").html(datGlobal[3][i].matchInfo[0].matchDetail.cornerKick);
 			$("#user0TackleSuccess").html(datGlobal[3][i].matchInfo[0].defence.tackleSuccess);
 			$("#user0Foul").html(datGlobal[3][i].matchInfo[0].matchDetail.foul);
-			$("#user0YellowCard").html(datGlobal[3][i].matchInfo[0].matchDetail.yellowCards);
-			$("#user0RedCard").html(datGlobal[3][i].matchInfo[0].matchDetail.redCards);
+			$("#user0YellowCards").html(datGlobal[3][i].matchInfo[0].matchDetail.yellowCards);
+			$("#user0RedCards").html(datGlobal[3][i].matchInfo[0].matchDetail.redCards);
 			$("#user0Injury").html(datGlobal[3][i].matchInfo[0].matchDetail.injury);
-			//$("#user0Injury").html(datGlobal[3][i].matchInfo[0].matchDetail.systemPause);
+			$("#user0Pause").html(datGlobal[3][i].matchInfo[0].matchDetail.systemPause);
 			
 			$("#user1Nickname").html(datGlobal[3][i].matchInfo[1].nickname);
 			$("#user1Nickname").append(' [' + datGlobal[3][i].matchInfo[1].matchDetail.matchResult + ']');
 			$("#user1Goal").html(datGlobal[3][i].matchInfo[1].shoot.goalTotal);
 			$("#user1Shoot").html(datGlobal[3][i].matchInfo[1].shoot.shootTotal);
 			$("#user1EffectiveShoot").html(datGlobal[3][i].matchInfo[1].shoot.effectiveShootTotal);
-			$("#user1PassSuccess").html(datGlobal[3][i].matchInfo[1].pass.passSuccess / datGlobal[3][i].matchInfo[1].pass.passTry);
+			$("#user1PassSuccess").html((datGlobal[3][i].matchInfo[1].pass.passSuccess / datGlobal[3][i].matchInfo[1].pass.passTry * 100).toFixed(2) + ' %');
 			$("#user1CornerKick").html(datGlobal[3][i].matchInfo[1].matchDetail.cornerKick);
 			$("#user1TackleSuccess").html(datGlobal[3][i].matchInfo[1].defence.tackleSuccess);
 			$("#user1Foul").html(datGlobal[3][i].matchInfo[1].matchDetail.foul);
-			$("#user1YellowCard").html(datGlobal[3][i].matchInfo[1].matchDetail.yellowCards);
-			$("#user1RedCard").html(datGlobal[3][i].matchInfo[1].matchDetail.redCards);
+			$("#user1YellowCards").html(datGlobal[3][i].matchInfo[1].matchDetail.yellowCards);
+			$("#user1RedCards").html(datGlobal[3][i].matchInfo[1].matchDetail.redCards);
 			$("#user1Injury").html(datGlobal[3][i].matchInfo[1].matchDetail.injury);
+			$("#user1Pause").html(datGlobal[3][i].matchInfo[1].matchDetail.systemPause);
 			
 			$("#myModal").modal('show');
 		}
@@ -367,9 +368,10 @@
 								<p class="lead"><strong>사용법</strong></p>
 								<p><strong>닉네임</strong>을 입력하여 유저의 전적을 조회합니다</p>
 								<p>전적을<strong>10, 25, 50, 100개</strong>로 표시를 변경할 수 있습니다</p>
+								<p><strong>경기 정보를 클릭하면</strong> 상세정보를 볼수 있습니다</p>
 								<p style="color: red;"><strong>50~100개의 데이터는 가져오는데 시간이 걸립니다(10초 이내) 다음, 이전 버튼을 마구 누르면 에러가 발생할 수 있습니다</strong></p>
 								<p style="color: red;"><strong>일부 데이터는 온전하지 않을 수 있습니다</strong></p>
-								<p style="color: red;"><strong>*경기 상세 정보 개발중(2020/08/08~)</strong></p>
+								<p style="color: red;"><strong>*경기 상세 정보 개발중(2020/08/11~)</strong></p>
 							  	<hr class="my-4">
 							</div>
 							<input type="hidden" name="post_writer" id="post_writer">
@@ -486,59 +488,64 @@
 				<div class="modal-body">
 					<main role="main" class="">
 						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
-							<div class="col" id="user0Nickname" style="font-size: large; font-weight: bold;">0</div>
+							<div class="col" id="user0Nickname" style="font-size: large; font-weight: bold;"></div>
 							<div class="col"></div>
-							<div class="col" id="user1Nickname" style="font-size: large; font-weight: bold;">1</div>
+							<div class="col" id="user1Nickname" style="font-size: large; font-weight: bold;"></div>
 						</div>
 						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
-							<div class="col" id="user0Goal" style="background-color: #F0EEED;">0</div>
+							<div class="col" id="user0Goal" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">골</div>
-							<div class="col" id="user1Goal" style="background-color: #F0EEED;">1</div>
+							<div class="col" id="user1Goal" style="background-color: #F0EEED;"></div>
 						</div>
 						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
-							<div class="col" id="user0Shoot" style="background-color: #F0EEED;">0</div>
+							<div class="col" id="user0Shoot" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">슛</div>
-							<div class="col" id="user1Shoot" style="background-color: #F0EEED;">1</div>
+							<div class="col" id="user1Shoot" style="background-color: #F0EEED;"></div>
 						</div>
 						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
-							<div class="col" id="user0EffectiveShoot" style="background-color: #F0EEED;">0</div>
+							<div class="col" id="user0EffectiveShoot" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">유효슛</div>
-							<div class="col" id="user1EffectiveShoot" style="background-color: #F0EEED;">1</div>
+							<div class="col" id="user1EffectiveShoot" style="background-color: #F0EEED;"></div>
 						</div>
 						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
-							<div class="col" id="user0PassSuccess" style="background-color: #F0EEED;">0</div>
+							<div class="col" id="user0PassSuccess" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">패스 성공률</div>
-							<div class="col" id="user1PassSuccess" style="background-color: #F0EEED;">1</div>
+							<div class="col" id="user1PassSuccess" style="background-color: #F0EEED;"></div>
 						</div>
 						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
-							<div class="col" id="user0CornerKick" style="background-color: #F0EEED;">0</div>
+							<div class="col" id="user0CornerKick" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">코너킥</div>
-							<div class="col" id="user1CornerKick" style="background-color: #F0EEED;">1</div>
+							<div class="col" id="user1CornerKick" style="background-color: #F0EEED;"></div>
 						</div>
 						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
-							<div class="col" id="user0TackleSuccess" style="background-color: #F0EEED;">0</div>
+							<div class="col" id="user0TackleSuccess" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">태클</div>
-							<div class="col" id="user1TackleSuccess" style="background-color: #F0EEED;">1</div>
+							<div class="col" id="user1TackleSuccess" style="background-color: #F0EEED;"></div>
 						</div>
 						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
-							<div class="col" id="user0Foul" style="background-color: #F0EEED;">0</div>
+							<div class="col" id="user0Foul" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">파울</div>
-							<div class="col" id="user1Foul" style="background-color: #F0EEED;">1</div>
+							<div class="col" id="user1Foul" style="background-color: #F0EEED;"></div>
 						</div>
 						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
-							<div class="col" id="user0YellowCards" style="background-color: #F0EEED;">0</div>
+							<div class="col" id="user0YellowCards" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">경고</div>
-							<div class="col" id="user1YellowCards" style="background-color: #F0EEED;">1</div>
+							<div class="col" id="user1YellowCards" style="background-color: #F0EEED;"></div>
 						</div>
 						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
-							<div class="col" id="user0RedCards" style="background-color: #F0EEED;">0</div>
+							<div class="col" id="user0RedCards" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">퇴장</div>
-							<div class="col" id="user1RedCards" style="background-color: #F0EEED;">1</div>
+							<div class="col" id="user1RedCards" style="background-color: #F0EEED;"></div>
 						</div>
 						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
-							<div class="col" id="user0Injury" style="background-color: #F0EEED;">0</div>
+							<div class="col" id="user0Injury" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">부상</div>
-							<div class="col" id="user1Injury" style="background-color: #F0EEED;">1</div>
+							<div class="col" id="user1Injury" style="background-color: #F0EEED;"></div>
+						</div>
+						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+							<div class="col" id="user0Pause" style="background-color: #F0EEED;"></div>
+							<div class="col" style="background-color: #BCB7B6;">경기 멈춤</div>
+							<div class="col" id="user1Pause" style="background-color: #F0EEED;"></div>
 						</div>
 					</main>
 				</div>

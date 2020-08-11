@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
 	<!-- Service 용 -->
-<!-- 
+	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://rasberry1.cormbfdskqps.ap-northeast-2.rds.amazonaws.com:3306/aop_lsj" />
@@ -18,11 +18,11 @@
         <property name="password" value="rasberry" />
         <property name="maxActive" value="5" />
 	</bean>
- -->
+	
 	<!-- Service 용 -->
 	
 	<!-- Test 용 -->
-
+<!-- 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://localhost:3306/springdb?serverTimezone=UTC" />
@@ -30,7 +30,7 @@
         <property name="password" value="0905" />
         <property name="maxActive" value="5" />
 	</bean>
-
+ -->
 	<!-- Test 용 -->
 	
 	<bean id="FO4visitorSessionDAOImpl" class="com.game.fifa.dao.FO4visitorSessionDAO.FO4visitorSessionDAOImpl"></bean>
