@@ -202,7 +202,6 @@
 									            	else{
 									            		htmlMatch += "<td>" + data[3][i].matchInfo[0].shoot.goalTotal + " : " + "0" + "</td>";
 										        		htmlMatch += "<td>" + "-" + "</td>";
-										            	htmlMatch += "<td>" + "" + "</td>";
 									            	}
 									            	
 								        		htmlMatch += "</tr>";
@@ -212,7 +211,6 @@
 									            	htmlMatch += "<td>" + data[3][i].matchDate.replace('T', " ") + "</td>";
 									            	
 									            	if(data[3][i].matchInfo.length > 1){
-									            		
 									            		if(data[3][i].matchInfo[1].matchDetail.matchResult == '승'){
 										            		htmlMatch += "<td style='color: blue;'>" + data[3][i].matchInfo[1].nickname + "</td>";
 										            	}
@@ -227,7 +225,6 @@
 									            	}
 									            	else{
 										        		htmlMatch += "<td>" + "-" + "</td>";
-										            	htmlMatch += "<td>" + "" + "</td>";
 										        		htmlMatch += "<td>" + "0" + " : " + data[3][i].matchInfo[0].shoot.goalTotal + "</td>";
 									            	}
 									            	
@@ -278,33 +275,113 @@
 			
 			console.log(datGlobal[3][i]);
 			
-			$("#user0Nickname").html(datGlobal[3][i].matchInfo[0].nickname);
-			$("#user0Nickname").append(' [' + datGlobal[3][i].matchInfo[0].matchDetail.matchResult + ']');
-			$("#user0Goal").html(datGlobal[3][i].matchInfo[0].shoot.goalTotal);
-			$("#user0Shoot").html(datGlobal[3][i].matchInfo[0].shoot.shootTotal);
-			$("#user0EffectiveShoot").html(datGlobal[3][i].matchInfo[0].shoot.effectiveShootTotal);
-			$("#user0PassSuccess").html((datGlobal[3][i].matchInfo[0].pass.passSuccess / datGlobal[3][i].matchInfo[0].pass.passTry * 100).toFixed(2) + ' %');
-			$("#user0CornerKick").html(datGlobal[3][i].matchInfo[0].matchDetail.cornerKick);
-			$("#user0TackleSuccess").html(datGlobal[3][i].matchInfo[0].defence.tackleSuccess);
-			$("#user0Foul").html(datGlobal[3][i].matchInfo[0].matchDetail.foul);
-			$("#user0YellowCards").html(datGlobal[3][i].matchInfo[0].matchDetail.yellowCards);
-			$("#user0RedCards").html(datGlobal[3][i].matchInfo[0].matchDetail.redCards);
-			$("#user0Injury").html(datGlobal[3][i].matchInfo[0].matchDetail.injury);
-			$("#user0Pause").html(datGlobal[3][i].matchInfo[0].matchDetail.systemPause);
-			
-			$("#user1Nickname").html(datGlobal[3][i].matchInfo[1].nickname);
-			$("#user1Nickname").append(' [' + datGlobal[3][i].matchInfo[1].matchDetail.matchResult + ']');
-			$("#user1Goal").html(datGlobal[3][i].matchInfo[1].shoot.goalTotal);
-			$("#user1Shoot").html(datGlobal[3][i].matchInfo[1].shoot.shootTotal);
-			$("#user1EffectiveShoot").html(datGlobal[3][i].matchInfo[1].shoot.effectiveShootTotal);
-			$("#user1PassSuccess").html((datGlobal[3][i].matchInfo[1].pass.passSuccess / datGlobal[3][i].matchInfo[1].pass.passTry * 100).toFixed(2) + ' %');
-			$("#user1CornerKick").html(datGlobal[3][i].matchInfo[1].matchDetail.cornerKick);
-			$("#user1TackleSuccess").html(datGlobal[3][i].matchInfo[1].defence.tackleSuccess);
-			$("#user1Foul").html(datGlobal[3][i].matchInfo[1].matchDetail.foul);
-			$("#user1YellowCards").html(datGlobal[3][i].matchInfo[1].matchDetail.yellowCards);
-			$("#user1RedCards").html(datGlobal[3][i].matchInfo[1].matchDetail.redCards);
-			$("#user1Injury").html(datGlobal[3][i].matchInfo[1].matchDetail.injury);
-			$("#user1Pause").html(datGlobal[3][i].matchInfo[1].matchDetail.systemPause);
+			if(datGlobal[3][i].matchInfo.length > 1){
+				if(datGlobal[3][i].matchInfo[0].matchDetail.matchResult == '승'){
+					$("#user0Nickname").css("color","blue");
+				}
+				else if(datGlobal[3][i].matchInfo[0].matchDetail.matchResult == '패'){
+					$("#user0Nickname").css("color","red");
+				}
+				else{
+					$("#user0Nickname").css("color","black");
+				}
+				$("#user0Nickname").html(datGlobal[3][i].matchInfo[0].nickname);
+				$("#user0Nickname").append(' [' + datGlobal[3][i].matchInfo[0].matchDetail.matchResult + ']');
+				$("#user0Goal").html(datGlobal[3][i].matchInfo[0].shoot.goalTotal);
+				$("#user0Shoot").html(datGlobal[3][i].matchInfo[0].shoot.shootTotal);
+				$("#user0PenaltyKick").html(datGlobal[3][i].matchInfo[0].shoot.shootPenaltyKick);
+				$("#user0EffectiveShoot").html(datGlobal[3][i].matchInfo[0].shoot.effectiveShootTotal);
+				
+				if(datGlobal[3][i].matchInfo[0].pass.passTry == 0){
+					$("#user0PassSuccess").html('0 %');
+				}
+				else{
+					$("#user0PassSuccess").html((datGlobal[3][i].matchInfo[0].pass.passSuccess / datGlobal[3][i].matchInfo[0].pass.passTry * 100).toFixed(2) + ' %');
+				}
+				$("#user0CornerKick").html(datGlobal[3][i].matchInfo[0].matchDetail.cornerKick);
+				$("#user0TackleSuccess").html(datGlobal[3][i].matchInfo[0].defence.tackleSuccess);
+				$("#user0Foul").html(datGlobal[3][i].matchInfo[0].matchDetail.foul);
+				$("#user0YellowCards").html(datGlobal[3][i].matchInfo[0].matchDetail.yellowCards);
+				$("#user0RedCards").html(datGlobal[3][i].matchInfo[0].matchDetail.redCards);
+				$("#user0Injury").html(datGlobal[3][i].matchInfo[0].matchDetail.injury);
+				$("#user0Pause").html(datGlobal[3][i].matchInfo[0].matchDetail.systemPause);
+				
+				//상대 구분--------------------
+				
+				if(datGlobal[3][i].matchInfo[1].matchDetail.matchResult == '승'){
+					$("#user1Nickname").css("color","blue");
+				}
+				else if(datGlobal[3][i].matchInfo[1].matchDetail.matchResult == '패'){
+					$("#user1Nickname").css("color","red");
+				}
+				else{
+					$("#user1Nickname").css("color","black");
+				}
+				$("#user1Nickname").html(datGlobal[3][i].matchInfo[1].nickname);
+				$("#user1Nickname").append(' [' + datGlobal[3][i].matchInfo[1].matchDetail.matchResult + ']');
+				$("#user1Goal").html(datGlobal[3][i].matchInfo[1].shoot.goalTotal);
+				$("#user1Shoot").html(datGlobal[3][i].matchInfo[1].shoot.shootTotal);
+				$("#user1PenaltyKick").html(datGlobal[3][i].matchInfo[1].shoot.shootPenaltyKick);
+				$("#user1EffectiveShoot").html(datGlobal[3][i].matchInfo[1].shoot.effectiveShootTotal);
+				
+				if(datGlobal[3][i].matchInfo[1].pass.passTry == 0){
+					$("#user1PassSuccess").html('0 %');
+				}
+				else{
+					$("#user1PassSuccess").html((datGlobal[3][i].matchInfo[1].pass.passSuccess / datGlobal[3][i].matchInfo[1].pass.passTry * 100).toFixed(2) + ' %');
+				}
+				$("#user1CornerKick").html(datGlobal[3][i].matchInfo[1].matchDetail.cornerKick);
+				$("#user1TackleSuccess").html(datGlobal[3][i].matchInfo[1].defence.tackleSuccess);
+				$("#user1Foul").html(datGlobal[3][i].matchInfo[1].matchDetail.foul);
+				$("#user1YellowCards").html(datGlobal[3][i].matchInfo[1].matchDetail.yellowCards);
+				$("#user1RedCards").html(datGlobal[3][i].matchInfo[1].matchDetail.redCards);
+				$("#user1Injury").html(datGlobal[3][i].matchInfo[1].matchDetail.injury);
+				$("#user1Pause").html(datGlobal[3][i].matchInfo[1].matchDetail.systemPause);
+			}
+			else{
+				if(datGlobal[3][i].matchInfo[0].matchDetail.matchResult == '승'){
+					$("#user0Nickname").css("color","blue");
+				}
+				else if(datGlobal[3][i].matchInfo[0].matchDetail.matchResult == '패'){
+					$("#user0Nickname").css("color","red");
+				}
+				else{
+					$("#user0Nickname").css("color","black");
+				}
+				$("#user0Nickname").html(datGlobal[3][i].matchInfo[0].nickname);
+				$("#user0Nickname").append(' [' + datGlobal[3][i].matchInfo[0].matchDetail.matchResult + ']');
+				$("#user0Goal").html(0);
+				$("#user0Shoot").html(0);
+				$("#user0PenaltyKick").html(0);
+				$("#user0EffectiveShoot").html(0);
+				
+				$("#user0PassSuccess").html('0 %');
+				$("#user0CornerKick").html(0);
+				$("#user0TackleSuccess").html(0);
+				$("#user0Foul").html(0);
+				$("#user0YellowCards").html(0);
+				$("#user0RedCards").html(0);
+				$("#user0Injury").html(0);
+				$("#user0Pause").html(0);
+				
+				//상대 구분--------------------
+				
+				$("#user1Nickname").html('');
+				$("#user1Nickname").append(' [패]');
+				$("#user1Goal").html(0);
+				$("#user1Shoot").html(0);
+				$("#user1PenaltyKick").html(0);
+				$("#user1EffectiveShoot").html(0);
+				
+				$("#user1PassSuccess").html('0 %');
+				$("#user1CornerKick").html(0);
+				$("#user1TackleSuccess").html(0);
+				$("#user1Foul").html(0);
+				$("#user1YellowCards").html(0);
+				$("#user1RedCards").html(0);
+				$("#user1Injury").html(0);
+				$("#user1Pause").html(0);
+			}
 			
 			$("#myModal").modal('show');
 		}
@@ -378,7 +455,7 @@
 							<div class="form-group" style="text-align: left;">
 								<label for="exampleFormControlInput1">유저 닉네임</label>
 								<div class="input-group">
-									<input type="text" class="form-control" id="nickNameSearch" name="nickNameSearch" value="T1JungMin" placeholder="닉네임을 입력해주세요" maxlength="50"
+									<input type="text" class="form-control" id="nickNameSearch" name="nickNameSearch" value="" placeholder="닉네임을 입력해주세요" maxlength="50"
 								  		onkeypress="if(event.keyCode == 13){enterPress();}" aria-label="Recipient's username" aria-describedby="basic-addon2">
 								  	<div class="input-group-append">
 								  		<select id="matchType" class="custom-select">
@@ -487,62 +564,68 @@
 				
 				<div class="modal-body">
 					<main role="main" class="">
-						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" id="user0Nickname" style="font-size: large; font-weight: bold;"></div>
 							<div class="col"></div>
 							<div class="col" id="user1Nickname" style="font-size: large; font-weight: bold;"></div>
 						</div>
-						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" id="user0Goal" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">골</div>
 							<div class="col" id="user1Goal" style="background-color: #F0EEED;"></div>
 						</div>
-						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" id="user0Shoot" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">슛</div>
 							<div class="col" id="user1Shoot" style="background-color: #F0EEED;"></div>
 						</div>
-						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" id="user0PenaltyKick" style="background-color: #F0EEED;"></div>
+							<div class="col" style="background-color: #BCB7B6;">패널티 킥</div>
+							<div class="col" id="user1PenaltyKick" style="background-color: #F0EEED;"></div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" id="user0EffectiveShoot" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">유효슛</div>
 							<div class="col" id="user1EffectiveShoot" style="background-color: #F0EEED;"></div>
 						</div>
-						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+						
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" id="user0PassSuccess" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">패스 성공률</div>
 							<div class="col" id="user1PassSuccess" style="background-color: #F0EEED;"></div>
 						</div>
-						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" id="user0CornerKick" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">코너킥</div>
 							<div class="col" id="user1CornerKick" style="background-color: #F0EEED;"></div>
 						</div>
-						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" id="user0TackleSuccess" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">태클</div>
 							<div class="col" id="user1TackleSuccess" style="background-color: #F0EEED;"></div>
 						</div>
-						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" id="user0Foul" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">파울</div>
 							<div class="col" id="user1Foul" style="background-color: #F0EEED;"></div>
 						</div>
-						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" id="user0YellowCards" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">경고</div>
 							<div class="col" id="user1YellowCards" style="background-color: #F0EEED;"></div>
 						</div>
-						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" id="user0RedCards" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">퇴장</div>
 							<div class="col" id="user1RedCards" style="background-color: #F0EEED;"></div>
 						</div>
-						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" id="user0Injury" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">부상</div>
 							<div class="col" id="user1Injury" style="background-color: #F0EEED;"></div>
 						</div>
-						<div class="row" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;">
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" id="user0Pause" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #BCB7B6;">경기 멈춤</div>
 							<div class="col" id="user1Pause" style="background-color: #F0EEED;"></div>

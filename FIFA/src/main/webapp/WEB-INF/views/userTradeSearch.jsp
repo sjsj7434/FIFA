@@ -166,13 +166,12 @@
 								            htmlSell += "<tr>";
 								            	htmlSell += "<td>" + (i+1) + "</td>";
 								            	if(data[3][i].playerVO == null){
-								            		htmlSell += "<td><img src='" + "resources/image/nodata.png" + "' alt='선수 이미지'/> " + "삭제된 선수" + "</td>";
+								            		htmlSell += "<td><img src='" + "resources/image/nodata.png" + "' alt='선수 이미지'/> " + "존재하지 않는 선수" + "</td>";
 								            	}
 								            	else{
 								            		htmlSell += "<td style='text-align: left;'><img src='" + data[3][i].playerVO.seasonimg + "' alt='시즌 이미지'/> " + data[3][i].playerVO.name + "</td>";
 								            	}
-								        		htmlSell += "<td>" + data[2][i].spid + "</td>";
-								        		htmlSell += "<td> +" + data[2][i].grade + "</td>";
+								        		htmlSell += "<td><img src='resources/image/grade/" + data[2][i].grade + ".png'/></td>";
 								        		htmlSell += "<td style='text-align: right;'>" + numberFormat(data[2][i].value); + "</td>";
 								        		htmlSell += "<td style='text-align: right;'>" + data[2][i].tradeDate.replace('T', " ") + "</td>";
 								        	htmlSell += "</tr>";
@@ -201,13 +200,12 @@
 								            htmlBuy += "<tr>";
 								            	htmlBuy += "<td>" + (i+1) + "</td>";
 								            	if(data[5][i].playerVO == null){
-								            		 htmlBuy += "<td><img src='" + "resources/image/nodata.png" + "' alt='선수 이미지'/> " + "삭제된 선수" + "</td>";
+								            		 htmlBuy += "<td><img src='" + "resources/image/nodata.png" + "' alt='선수 이미지'/> " + "존재하지 않는 선수" + "</td>";
 								            	}
 								            	else{
 								            		htmlBuy += "<td style='text-align: left;'><img src='" + data[5][i].playerVO.seasonimg + "' alt='시즌 이미지'/> " + data[5][i].playerVO.name + "</td>";
 								            	}
-									            htmlBuy += "<td>" + data[4][i].spid + "</td>";
-									            htmlBuy += "<td> +" + data[4][i].grade + "</td>";
+									            htmlBuy += "<td><img src='resources/image/grade/" + data[4][i].grade + ".png'/></td>";
 									            htmlBuy += "<td style='text-align: right;'>" + numberFormat(data[4][i].value); + "</td>";
 									            htmlBuy += "<td style='text-align: right;'>" + data[4][i].tradeDate.replace('T', " ") + "</td>";
 								        	htmlBuy += "</tr>";
@@ -294,7 +292,6 @@
 		    	<h1 style="font-size: 60px;">거래기록 조회</h1>
 				<div style="margin-top:15px;" id="errorFormArea">
 					<div class="bd-example">
-						<!-- <grammarly-extension style="position: absolute; top: -3.1875px; left: -3.1875px; pointer-events: none;" class="_1KJtL"></grammarly-extension> -->
 						<form name="sendForm" id="sendForm" method="POST" onsubmit="return false">
 							<div class="form-group" style="text-align: left;">
 								<hr class="my-4">
@@ -302,7 +299,7 @@
 								<p><strong>닉네임</strong>을 입력하여 유저의 거래 기록을 조회합니다</p>
 								<p>이전, 다음 버튼을 이용하여 페이지를 넘길 수 있고 <strong>10, 25, 50, 100개</strong> 표시를 변경할 수 있습니다</p>
 								<p><strong>사재기 장사꾼</strong>으로 의심이 간다면 확인해보세요!</p>
-								<p style="color: red;"><strong>일부 선수는 더 이상 존재하지 않아 "삭제된 선수"로 출력 됩니다</strong></p>
+								<p style="color: red;"><strong>일부 선수는 더 이상 존재하지 않아 "존재하지 않는 선수"로 출력 됩니다</strong></p>
 								<p style="color: red;"><strong>데이터는 Nexon의 시스템에서 가져오므로 "거래날짜"가 동일하게 나올 수 있습니다</strong></p>
 							  	<hr class="my-4">
 							</div>
@@ -310,7 +307,7 @@
 							<div class="form-group" style="text-align: left;">
 								<label for="exampleFormControlInput1">유저 닉네임</label>
 								<div class="input-group mb-3">
-								  <input type="text" class="form-control" id="nickNameSearch" name="nickNameSearch" value="T1JungMin" placeholder="닉네임을 입력해주세요" maxlength="50" onkeypress="if(event.keyCode == 13){enterPress();}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+								  <input type="text" class="form-control" id="nickNameSearch" name="nickNameSearch" value="" placeholder="닉네임을 입력해주세요" maxlength="50" onkeypress="if(event.keyCode == 13){enterPress();}" aria-label="Recipient's username" aria-describedby="basic-addon2">
 								  	<div class="input-group-append">
 								    	<button class="btn btn-outline-secondary" type="button" onclick="userTradeSearchAjax(0)">조회</button>
 									</div>
@@ -370,7 +367,6 @@
 							<th>번호</th>
 							<th style="display: none;">이미지</th>
 							<th>이름</th>
-							<th>선수고유아이디</th>
 							<th>강화등급</th>
 							<th style="text-align: right;">가치(BP)</th>
 							<th style="text-align: right;">거래날짜</th>
@@ -390,7 +386,6 @@
 							<th>번호</th>
 							<th style="display: none;">이미지</th>
 							<th>이름</th>
-							<th>선수고유아이디</th>
 							<th>강화등급</th>
 							<th style="text-align: right;">가치(BP)</th>
 							<th style="text-align: right;">거래날짜</th>

@@ -16,6 +16,7 @@
 	<script type="text/javascript">
 		google.charts.load('current', {'packages':['bar']});
     </script>
+	
     <script type="text/javascript">
 	    function imageError(data) {
 			$(data)[0].src = "resources/image/error.png";
@@ -58,155 +59,168 @@
 			            }
 	
 						var options = {
-						  chart: {
-						    title: '20경기 선수 통계',
-						    subtitle: 'TOP 10,000 랭커, 그래프에 표시되지 않는 선수는 데이터가 없는 경우',
-						  },
-						  bars: 'horizontal' // Required for Material Bar Charts.
+							bar: {
+								groupWidth: '80%'
+							},
+							height: chartData.fg.length*200,
+							legend: 'none',
+						  	chart: {
+						    	title: '20경기 선수 통계',
+						    	subtitle: 'TOP 10000',
+						  	},
+						  	bars: 'horizontal' // Required for Material Bar Charts.	horizontal	vertical
 						};
-						
-						document.getElementById('columnchart_material').style.height = chartData.fg.length*200;
-						
 						var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-						
 						chart.draw(chartData, google.charts.Bar.convertOptions(options));
-		        	}
-		        },
-		        error:function(request, status, error){
-		        	/* alert("응답코드:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); */
-		        	if(request.status == 500){
-		        		alert("응답코드:"+request.status+"\n내용:"+"넥슨 서버 내부 에러");
-		        	}
-		        	else{
-		        		alert("응답코드:"+request.status+"\n내용:"+"에러가 발생했습니다")
-		        	}
-		        }
-		    });
+						window.addEventListener('resize', function() { chart.draw(chartData, google.charts.Bar.convertOptions(options)); }, false); //화면 크기에 따라 그래프 크기 변경
+						$("#myModal").modal('show');
+					}
+				},
+				error : function(request, status, error) {
+					if (request.status == 500) {
+						alert("응답코드:" + request.status + "\n내용:" + "넥슨 서버 내부 에러");
+					}
+					else {
+						alert("응답코드:" + request.status + "\n내용:" + "에러가 발생했습니다")
+					}
+				}
+			});
 		}
 		
+		function resizeGraph() {
+			window.dispatchEvent(new Event('resize'));
+		}
+
 		function searchPlayer() {
-			var RegExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+			var RegExp = /[ \{\}\[\]\/?,;:|\)*~`!^\_+┼<>@\#$%&\'\"\\\(\=]/gi;
 			var playerName = document.getElementById('playerName').value.replace(/ /gi, '');;
-	
-			if(playerName == ''){
+
+			if (playerName == '') {
 				alert('검색할 선수 이름을 입력해주세요');
-			}
-			else{
-				if(RegExp.test(playerName)){
+			} 
+			else {
+				if (RegExp.test(playerName)) {
 					alert('특수문자는 입력할 수 없습니다');
 				}
-				else{
+				else {
 					$.ajax({
-				        url:"searchPlayer",
-				        type:'POST',
-				        data: {"playerName": $('input[name=playerName]').val()},
-				        success:function(data){
-				        	var bucket = 0;
-				            var html = '';
-				            for(var index=0; index < data[0].length; index++){
+						url : "searchPlayer",
+						type : 'POST',
+						data : {
+							"playerName" : $('input[name=playerName]').val()
+						},
+						success : function(data) {
+							var bucket = 0;
+							var html = '';
+							for (var index = 0; index < data[0].length; index++) {
 								html += '<tr id="'+ data[0][index].id +'">';
-					        		html += '<td style="text-align: center;">'+ (index + 1) +'</td>';
-					        		html += '<td style="text-align: left;"><img src="'+data[0][index].seasonimg+'" alt="시즌 이미지" />'+data[0][index].name+'</td>';
-						            html += '<td style="text-align: left;">'+data[0][index].id+'</td>';
-						            
-						            if($("#selectedPlayerTableTbody").children().length == 0){
-						            	html += '<td style="display: block; text-align: left;"><button type="button" class="btn btn-success" onclick="playerAdd(this)">추가</button></td>';
-							            html += '<td style="display: none; text-align: left;"><button type="button" class="btn btn-outline-success" disabled>추가</button></td>';
-						            }
-						            else if($("#selectedPlayerTableTbody").children().length > 0){
-						            	for(var i=0; i<$("#selectedPlayerTableTbody").children().length; i++){
-							            	if($('#selectedPlayerTableTbody tr:eq('+i+')>td:eq(3)').text() == (data[0][index].id)){
-							            		html += '<td style="display: none; text-align: left;"><button type="button" class="btn btn-success" onclick="playerAdd(this)">추가</button></td>';
-									            html += '<td style="display: block; text-align: left;"><button type="button" class="btn btn-outline-success" disabled>추가</button></td>';
-									            bucket++;
-									            break;
-							            	}
-							            }
-						            	if(bucket == 0){
-						            		html += '<td style="display: block; text-align: left;"><button type="button" class="btn btn-success" onclick="playerAdd(this)">추가</button></td>';
-								            html += '<td style="display: none; text-align: left;"><button type="button" class="btn btn-outline-success" disabled>추가</button></td>';
-						            	}
-						            	else{
-						            		bucket = 0;
-						            	}
-						            }
-						            html += '<td style="display: none;">'+data[0][index].seasonimg+'</td>';
-						           /*  html += '<td style="text-align: center;"><img src="'+data[0][index].playerActionShotImage+'" onerror="imageError(this)" alt="선수 이미지" /></td>'; */
-					            html += '</tr>';
-				            }
-				            $("#playerTableTbody").empty();
-				            $("#playerTableTbody").append(html);
-				        },
-				        error:function(request, status, error){
-				        	/* alert("응답코드:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); */
-				        	if(request.status == 500){
-				        		alert("응답코드:"+request.status+"\n내용:"+"넥슨 서버 내부 에러");
-				        	}
-				        	else{
-				        		alert("응답코드:"+request.status+"\n내용:"+"에러가 발생했습니다")
-				        	}
-				        }
-				    });
+								html += '<td style="text-align: center; display: none;">' + (index + 1) + '</td>';
+								html += '<td style="text-align: left;"><img src="'+data[0][index].seasonimg+'" alt="시즌 이미지" />' + data[0][index].name + '</td>';
+								html += '<td style="text-align: left;">' + data[0][index].id + '</td>';
+
+								if ($("#selectedPlayerTableTbody").children().length == 0) {
+									html += '<td style="display: block; text-align: left;"><button type="button" class="btn btn-success" onclick="playerAdd(this)">추가</button></td>';
+									html += '<td style="display: none; text-align: left;"><button type="button" class="btn btn-outline-success" disabled>추가</button></td>';
+								} else if ($("#selectedPlayerTableTbody").children().length > 0) {
+									for (var i = 0; i < $("#selectedPlayerTableTbody").children().length; i++) {
+										if ($('#selectedPlayerTableTbody tr:eq(' + i + ')>td:eq(3)') .text() == (data[0][index].id)) {
+											html += '<td style="display: none; text-align: left;"><button type="button" class="btn btn-success" onclick="playerAdd(this)">추가</button></td>';
+											html += '<td style="display: block; text-align: left;"><button type="button" class="btn btn-outline-success" disabled>추가</button></td>';
+											bucket++;
+											break;
+										}
+									}
+									if (bucket == 0) {
+										html += '<td style="display: block; text-align: left;"><button type="button" class="btn btn-success" onclick="playerAdd(this)">추가</button></td>';
+										html += '<td style="display: none; text-align: left;"><button type="button" class="btn btn-outline-success" disabled>추가</button></td>';
+									} else {
+										bucket = 0;
+									}
+								}
+								html += '<td style="display: none;">' + data[0][index].seasonimg + '</td>';
+								/*  html += '<td style="text-align: center;"><img src="'+data[0][index].playerActionShotImage+'" onerror="imageError(this)" alt="선수 이미지" /></td>'; */
+								html += '</tr>';
+							}
+							$("#playerTableTbody").empty();
+							$("#playerTableTbody").append(
+									html);
+						},
+						error : function(request, status, error) {
+							if (request.status == 500) {
+								alert("응답코드:" + request.status + "\n내용:" + "넥슨 서버 내부 에러");
+							} else {
+								alert("응답코드:" + request.status + "\n내용:" + "에러가 발생했습니다")
+							}
+						}
+					});
 				}
 			}
 		}
-		
+
 		function playerAdd(data) {
 			var tr = $(data).parent().parent();
 			var td = tr.children();
-	
-			if(td.eq(3).css('display') == 'block'){
-				td.eq(3).css('display','none');
-				td.eq(4).css('display','block');
-				var length = $("#selectedPlayerTableTbody").children().length
+
+			if (td.eq(3).css('display') == 'block') {
+				td.eq(3).css('display', 'none');
+				td.eq(4).css('display', 'block');
+				var length = $("#selectedPlayerTableTbody")
+						.children().length
 				var html = '';
 				html += '<tr>';
-					html += '<td style="text-align: left;"><img src="'+ td.eq(5).text() +'" alt="시즌 이미지" />'+ td.eq(1).text() +'</td>';
-					html += '<td style="text-align: left;">'+ td.eq(2).text() +'</td>';
-					html +=	'<td style="text-align: left;"><button type="button" class="btn btn-danger" onclick="selectedPlayerTableDelete(this)">삭제</button></td>';
-					html += '<td style="display: none;">'+ tr.attr('id') +'</td>';
-					html += '<td style="display: none;"><input type="hidden" name="players" value="'+td.eq(2).text()+'"/></td>';
-	            html += '</tr>';
-	            $("#selectedPlayerTableTbody").append(html);
-	            
-	            $("#numberOfPlayers").empty();
-	            $("#numberOfPlayers").append("조회할 선수 : "+(length + 1)+"명");
+				html += '<td style="text-align: left;"><img src="'
+						+ td.eq(5).text() + '" alt="시즌 이미지" />'
+						+ td.eq(1).text() + '</td>';
+				html += '<td style="text-align: left;">'
+						+ td.eq(2).text() + '</td>';
+				html += '<td style="text-align: left;"><button type="button" class="btn btn-danger" onclick="selectedPlayerTableDelete(this)">삭제</button></td>';
+				html += '<td style="display: none;">'
+						+ tr.attr('id') + '</td>';
+				html += '<td style="display: none;"><input type="hidden" name="players" value="'
+						+ td.eq(2).text() + '"/></td>';
+				html += '</tr>';
+				$("#selectedPlayerTableTbody").append(html);
+
+				$("#numberOfPlayers").empty();
+				$("#numberOfPlayers").append(
+						"조회할 선수 : " + (length + 1) + "명");
 			}
 		}
-		
+
 		function selectedPlayerTableDelete(data) {
 			var tr = $(data).parent().parent();
 			var td = tr.children();
 			var length = $("#selectedPlayerTableTbody").children().length
-	
+
 			tr.remove();
-			
-			$("#"+td.eq(3).text()).children().eq(3).css('display', 'block');
-			$("#"+td.eq(3).text()).children().eq(4).css('display', 'none');
-			
+
+			$("#" + td.eq(3).text()).children().eq(3).css(
+					'display', 'block');
+			$("#" + td.eq(3).text()).children().eq(4).css(
+					'display', 'none');
+
 			$("#numberOfPlayers").empty();
-	           $("#numberOfPlayers").append("조회할 선수 : "+(length - 1)+"명");
+			$("#numberOfPlayers").append("조회할 선수 : " + (length - 1) + "명");
 		}
-		
-		function selectedPlayerTableClean(data) {
-			if(confirm("정말 비우시겠습니까?")){
-				var table = $(data).parent().parent().parent().parent();
-				var tr = $(data).parent().parent();
+
+		function selectedPlayerTableClean() {
+			if (confirm("정말 비우시겠습니까?")) {
+				var tr = $("#selectedPlayerTableTbody").children();
 				var td = tr.children();
-				var length = $("#selectedPlayerTableTbody").children().length
-		           
-				for(var i=0; i < length; i++){
-					var deletedRow = table.children().eq(2).children().eq(i).children().eq(3).text();
-					$("#"+ deletedRow).children().eq(3).css('display', 'block');
-					$("#"+ deletedRow).children().eq(4).css('display', 'none');
+				var length = $("#selectedPlayerTableTbody").children().length;
+				
+				for (var i = 0; i < length; i++) {
+					var deletedRow = tr.eq(i).children().eq(3).text();
+					$("#" + deletedRow).children().eq(3).css('display', 'block');
+					$("#" + deletedRow).children().eq(4).css('display', 'none');
 				}
 				
 				$("#selectedPlayerTableTbody").empty();
 				$("#numberOfPlayers").empty();
-				$("#numberOfPlayers").append("조회할 선수 : "+ 0 +"명");
+				$("#numberOfPlayers").append("조회할 선수 : " + 0 + "명");
 			}
 		}
-		
+
 		function enterPress() {
 			searchPlayer();
 		}
@@ -279,7 +293,6 @@
 							</div>
 						</div>
 						<div class="bd-example">
-							<grammarly-extension style="position: absolute; top: -3.1875px; left: -3.1875px; pointer-events: none;" class="_1KJtL"></grammarly-extension>
 							<form name="sendForm" id="sendForm" method="POST" onsubmit="return false">
 								<input type="hidden" name="post_writer" id="post_writer">
 								<div class="form-group" style="text-align: left;">
@@ -350,32 +363,35 @@
 		</div>
 
 		<form name="sendForm" onsubmit="return false">
-			<div style="width:60%; float:left; padding-left: 150px;">
-				<table class="table table-sm table-striped" style="width: 60%;">
+			<div class="row" style="width:48%; padding-left: 150px;">
+				<div class="col">
+					<button type="button" style="width: 100%" class="btn btn-danger" onclick="selectedPlayerTableClean(this)">목록 비우기</button>
+				</div>
+				<div class="col">
+				</div>
+				<div class="col">
+				</div>
+			</div>
+			<div style="width:48%; float:left; padding-left: 150px;">
+				<table class="table table-sm table-striped">
 					<caption id="numberOfPlayers" style="font-size: large; font-weight: bold; caption-side: top;">조회할 선수 : 0명</caption>
 					<thead>
 						<tr>
 							<th valign="middle">이름</th>
 							<th valign="middle">고유 번호</th>
 							<th valign="middle">삭제</th>
-							<th><button type="button" style="width: 100%" class="btn btn-danger" onclick="selectedPlayerTableClean(this)"> 테이블 비우기 </button></th>
 						</tr>
 					</thead>
 					<tbody id="selectedPlayerTableTbody">
 					</tbody>
 				</table>
-				
-				<div>
-					<div id="columnchart_material" ></div>
-				</div>
 			</div>
 			
-			<div style="width:30%; float:right; padding-right: 150px;">
+			<div style="width:48%; float:right; padding-right: 150px;">
 				<table id="playerTable" class="table table-sm table-striped">
 					<caption style="font-size: large; font-weight: bold; caption-side: top;">검색 결과</caption>
 					<thead>
 						<tr>
-							<th>번호</th>
 							<th>이름</th>
 							<th>고유 번호</th>
 							<th>추가</th>
@@ -398,6 +414,39 @@
 			<span class="text-muted">TODAY : ${countTodayVisitors}명</span>
 		</div>
 	</footer>
+
+	<div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+			
+				<div class="modal-header">
+					<h5 class="modal-title">그래프</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<p>그래프에 표시되지 않는 선수는 데이터가 없는 경우입니다</p>
+					<p>그래프가 잘린다면 <strong>"그래프 조정"</strong> 버튼을 눌러주세요</p>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onclick="resizeGraph()">그래프 조정</button>
+				</div>
+				
+				<div class="modal-body">
+					<div id="columnchart_material"></div>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary" onclick="resizeGraph()">그래프 조정</button>
+				</div>
+				
+			</div>
+		</div>
+	</div>
 	
 </body>
 </html>
