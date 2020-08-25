@@ -36,11 +36,7 @@ public class VisitorSessionListener implements HttpSessionListener{
 
 	@Override
 	public void sessionDestroyed(HttpSessionEvent se) {
-//		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-//		String ip = req.getHeader("X-FORWARDED-FOR");
-//		if (ip == null) {
-//			ip = req.getRemoteAddr();
-//		}
+
 	}
 
 }

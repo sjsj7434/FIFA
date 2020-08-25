@@ -23,6 +23,21 @@ public class CommonController {
 	@Autowired
 	FO4announcementService announcementService;
 	
+	@RequestMapping(value = "navercd10768da9de883ed7ff5aec937d6d76.html", method = RequestMethod.GET)
+	public String naver(Model model) {
+		return "others/navercd10768da9de883ed7ff5aec937d6d76";
+	}
+	
+	@RequestMapping(value = "googleecf2b754b679d3e0.html", method = RequestMethod.GET)
+	public String google(Model model) {
+		return "others/googleecf2b754b679d3e0";
+	}
+	
+	@RequestMapping(value = "robots.txt", method = RequestMethod.GET)
+	public String robots(Model model) {
+		return "others/robots";
+	}
+	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String normal(Model model, FO4announcementVO announcementVO) {

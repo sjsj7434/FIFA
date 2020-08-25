@@ -3,8 +3,29 @@
 
 <html>
 <head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-176171640-1"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	
+	  gtag('config', 'UA-176171640-1');
+	</script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	
+	<!-- Open  Graph -->
+	<meta property="og:title" content="피파거시기" />
+	<meta property="og:description" content="피파온라인4의 잡다한 정보" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="http://www.vlvk4.com/" />
+	<meta property="og:image" content="http://www.vlvk4.com/resources/image/F4.png" />
+	<!-- Open  Graph -->
+	
+	<meta name="description" content="피파온라인4 유저 전적 검색, 선수 정보 비교, 유저 거래기록 조회">
+	
 	<meta charset="utf-8">
-	<title>선수 검색</title>
+	<title>피파거시기</title>
 	<link rel="shortcut icon" type="image/x-icon" href="resources/image/F4.png">
 	
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -245,7 +266,7 @@
 	<header>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	      	<div class="container">
-		        <a class="navbar-brand" href="#"><img alt="logo.png" src="resources/image/F4.png" height="35" width="35">FO4</a>
+		        <a class="navbar-brand" href="/"><img alt="logo.png" src="resources/image/F4.png" height="35" width="35">피파거시기</a>
 		        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
 		          	<span class="navbar-toggler-icon"></span>
 		        </button>

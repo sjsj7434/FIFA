@@ -2,12 +2,10 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- MySQL이 기본적으로 8시간동안 요청이 없으면 커넥션을 해지하고 풀링을 해지 -->
-
 <mapper namespace="playerMapper">
 
 	<!-- Service 용 -->
-	<!-- 
+
 	<select id="selectPlayerByName" resultType="com.game.fifa.vo.FO4playerVO">
 		SELECT 
 			spid.id, 
@@ -141,11 +139,11 @@
 			#{referer}
 		)
 	</insert>
-	 -->
+
 	<!-- Service 용 -->
 	
 	<!-- Test 용 -->
-
+<!-- 
 	<select id="selectPlayerByName" resultType="com.game.fifa.vo.FO4playerVO">
 		SELECT 
 			spid.id, 
@@ -279,7 +277,7 @@
 			#{referer}
 		)
 	</insert>
-
+ -->
 	<!-- Test 용 -->
 	
 </mapper>
