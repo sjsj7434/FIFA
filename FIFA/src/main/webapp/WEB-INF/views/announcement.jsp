@@ -128,7 +128,7 @@
 	<header>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	      	<div class="container">
-		        <a class="navbar-brand" href="/"><img alt="logo.png" src="resources/image/F4.png" height="35" width="35">피파거시기</a>
+		        <a class="navbar-brand" href="main"><img alt="logo.png" src="resources/image/F4.png" height="35" width="35">피파거시기</a>
 		        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
 		          	<span class="navbar-toggler-icon"></span>
 		        </button>
@@ -277,6 +277,7 @@
 	<footer class="footer mt-auto py-3">
 		<div class="container">
 			<span class="text-muted">FIFA ONLINE 4 (Data based on NEXON DEVELOPERS)</span>
+			<a href="siteExplain"><span class="text-muted">Site Explain</span></a>
 		</div>
 		<div class="container">
 			<span class="text-muted">TOTAL : ${countAllVisitors}명</span>

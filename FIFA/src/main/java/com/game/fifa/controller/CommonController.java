@@ -38,6 +38,18 @@ public class CommonController {
 		return "others/robots";
 	}
 	
+	@RequestMapping(value = "siteExplain", method = RequestMethod.GET)
+	public String siteExplain(Model model) {
+		//방문자 counter 관련
+			int countAllVisitors = visitorSessionService.countAllVisitors();
+			model.addAttribute("countAllVisitors", countAllVisitors);
+			int countTodayVisitors = visitorSessionService.countTodayVisitors();
+			model.addAttribute("countTodayVisitors", countTodayVisitors);
+		//방문자 counter 관련
+			
+		return "siteExplain";
+	}
+	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String normal(Model model, FO4announcementVO announcementVO) {
@@ -59,7 +71,45 @@ public class CommonController {
 			pagination = (totalAnnouncementCount/10);
 		}
 		JSONArray jsonArray = new JSONArray();
-		for(int index = 0; index < announcementList.size(); index++) {
+		for(int index = 0; index < announcementList.size(); index++) {//json에 공지사항 정보 추가해서 Array에 추가
+			JSONObject json = new JSONObject();
+			json.put("post_id", announcementList.get(index).getPost_id());
+			json.put("post_title", announcementList.get(index).getPost_title());
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			json.put("post_write_date", dateFormat.format(announcementList.get(index).getPost_write_date()));
+			jsonArray.add(json);
+		}
+	//공지사항 관련
+	
+		model.addAttribute("announcementList", jsonArray);
+		model.addAttribute("pagination", pagination);
+		model.addAttribute("offset", announcementVO.getOffset());
+		
+		return "announcement";
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/main", method = RequestMethod.GET)
+	public String main(Model model, FO4announcementVO announcementVO) {
+	//방문자 counter 관련
+		int countAllVisitors = visitorSessionService.countAllVisitors();
+		model.addAttribute("countAllVisitors", countAllVisitors);
+		int countTodayVisitors = visitorSessionService.countTodayVisitors();
+		model.addAttribute("countTodayVisitors", countTodayVisitors);
+	//방문자 counter 관련
+		
+	//공지사항 관련
+		List<FO4announcementVO> announcementList = announcementService.selectAnnouncementList(announcementVO);
+		int totalAnnouncementCount = announcementService.selectCountAnnouncementList();
+		int pagination = 0;
+		if(totalAnnouncementCount%10 > 0) {
+			pagination = (totalAnnouncementCount/10) + 1;
+		}
+		else {
+			pagination = (totalAnnouncementCount/10);
+		}
+		JSONArray jsonArray = new JSONArray();
+		for(int index = 0; index < announcementList.size(); index++) {//json에 공지사항 정보 추가해서 Array에 추가
 			JSONObject json = new JSONObject();
 			json.put("post_id", announcementList.get(index).getPost_id());
 			json.put("post_title", announcementList.get(index).getPost_title());

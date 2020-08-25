@@ -34,53 +34,32 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js" integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
 	
-	<script type="text/javascript" src="http://jsgetip.appspot.com/?getip"></script>
-    <script type="text/javascript">
-   		function numberFormat(inputNumber) {
-    	   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    	}
-   		
-   		function imageError(data) {
-			$(data)[0].src = "resources/image/error.png";
-		}
-   		
-   		function postWrite() {
-   			var post_title = document.getElementById("post_title").value;
-   			var post_contents = document.getElementById("post_contents").value;
-   			var post_writer = document.getElementById("post_writer");
-   			var IP = getip();
-   			post_writer.value = IP;
-   			
-   			if(post_title == ''){
-   				$('#myModal').modal('show');
-   				return;
-   			}
-   			if(post_contents == ''){
-   				$('#myModal').modal('show');
-   				return;
-   			}
-
-   			var formData = $("#sendForm").serialize();
-   			$.ajax({
-   				url:"errorReportWrite",
-   				type:"POST",
-   				data:formData,
-   				success:function(data){
-   					var html = "<h2 style='margin-top:15px; margin-bottom:15px;'>의견 감사합니다.</h2>";
-   		   			var area = $("#errorFormArea");
-   		   			area.empty();
-   		   			area.append(html);
-   				},
-   				error:function(errorThrown){
-   					var html = "<h2 style='margin-top:15px; margin-bottom:15px;'>제출 실패하였습니다.</h2>";
-   		   			var area = $("#errorFormArea");
-   		   			area.empty();
-   		   			area.append(html);
-		        }
-   			});
+	<script type="text/javascript">
+		function skillExplain(index, tag) {
+			$("#modalTitle").html($(tag).text());
+			
+			switch (index) {
+			case 1:
+				$("#modalText").html("자바로 구현, 스프링 프레임워크로 BackEnd 구현");
+				break;
+			case 2:
+				$("#modalText").html("JS & Bootstrap을 이용하여 디자인 구성");
+				break;
+			case 3:
+				$("#modalText").html("AWS RDS 서비스를 이용하며, MySQL을 데이터베이스로 사용함");
+				break;
+			case 4:
+				$("#modalText").html("AWS EC2 서비스를 이용하여 Linux 웹 서버를 사용함");
+				break;
+			default:
+				$("#modalText").html("기술 설명...");
+				break;
+			}
+			
+			$("#myModal").modal('show');
 		}
 	</script>
-
+	
 	<style>
 		main > .container {
 		  padding: 60px 15px 0;
@@ -118,7 +97,7 @@
 			            <li class="nav-item" style="padding-right: 20px;">
 			              	<a class="nav-link" href="userMatchSearch">유저 전적 검색</a>
 			            </li>
-			            <li class="nav-item active" style="padding-right: 20px;">
+			            <li class="nav-item" style="padding-right: 20px;">
 			              	<a class="nav-link" href="errorReport">오류 신고/건의사항</a>
 			            </li>
 		          	</ul>
@@ -128,25 +107,22 @@
 	</header>
 	
 	<main role="main" class=""><!-- flex-shrink-0 -->
-		<div class="container"><!--  -->
+		<div class="container">
 			<div class="jumbotron">
-		    	<h1 style="font-size: 60px;">오류 신고/건의사항</h1>
+		    	<h1 style="font-size: 60px;">#Skills that I use#</h1>
 				<div style="margin-top:15px;" id="errorFormArea">
 					<div class="bd-example">
-						<grammarly-extension style="position: absolute; top: -3.1875px; left: -3.1875px; pointer-events: none;" class="_1KJtL"></grammarly-extension>
-						<form name="sendForm" id="sendForm" method="POST" onsubmit="return false">
-							<input type="hidden" name="post_writer" id="post_writer">
-							<div class="form-group" style="text-align: left;">
-								<label for="exampleFormControlInput1">제목</label>
-								<input type="text" class="form-control" id="post_title" name="post_title" placeholder="제목을 입력해주세요" maxlength="100">
-							</div>
-							<div class="form-group" style="text-align: left;">
-								<label for="exampleFormControlTextarea1">내용</label>
-								<textarea class="form-control" name="post_contents" id="post_contents" rows="5" spellcheck="false" placeholder="내용을 입력해주세요" maxlength="1000"></textarea>
-							</div>
-						</form>
+						<div class="form-group" style="text-align: left;">
+							<hr class="my-4">
+							
+							<p onclick="skillExplain(1, this);" style="cursor:pointer;"><strong>JAVA / Spring Framework</strong></p>
+							<p onclick="skillExplain(2,this);" style="cursor:pointer;"><strong>JavaScript / BootStrap</strong></p>
+							<p onclick="skillExplain(3,this);" style="cursor:pointer;"><strong>MySQL DataBase</strong></p>
+							<p onclick="skillExplain(4,this);" style="cursor:pointer; color: red;"><strong>AWS EC2 Linux server</strong></p>
+							
+						  	<hr class="my-4">
+						</div>
 					</div>
-					<a class="btn btn-lg btn-primary" href="javascript:postWrite();" role="button">제출하기</a>
 				</div>
 			</div>
 		</div>
@@ -168,13 +144,13 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">WARNING!</h5>
+					<h5 class="modal-title" id="modalTitle"></h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<p>제목, 내용을 입력해주세요</p>
+					<p id="modalText"></p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -183,5 +159,6 @@
 			</div>
 		</div>
 	</div>
+	
 </body>
 </html>
