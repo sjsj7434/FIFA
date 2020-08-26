@@ -431,12 +431,14 @@
 	<footer class="footer mt-auto py-3">
 		<div class="container">
 			<span class="text-muted">FIFA ONLINE 4 (Data based on NEXON DEVELOPERS)</span>
-			<a href="siteExplain"><span class="text-muted">Site Explain</span></a>
 		</div>
 		<div class="container">
 			<span class="text-muted">TOTAL : ${countAllVisitors}명</span>
 			<span class="text-muted"> & </span>
 			<span class="text-muted">TODAY : ${countTodayVisitors}명</span>
+		</div>
+		<div>
+			<a href="siteExplain"><span class="text-muted">사이트 설명(Site Explain)</span></a>		
 		</div>
 	</footer>
 	

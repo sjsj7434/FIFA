@@ -319,7 +319,7 @@
 								<div class="form-group" style="text-align: left;">
 									<label for="exampleFormControlInput1">선수 이름</label>
 									<div class="input-group mb-3">
-									  <input type="text" class="form-control" name="playerName" id="playerName" placeholder="선수 이름을 입력하세요" value="메시" maxlength="50" onkeypress="if(event.keyCode == 13){enterPress();}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+									  <input type="text" class="form-control" name="playerName" id="playerName" placeholder="선수 이름을 입력하세요" value="" maxlength="50" onkeypress="if(event.keyCode == 13){enterPress();}" aria-label="Recipient's username" aria-describedby="basic-addon2">
 									  	<div class="input-group-append">
 									    	<button class="btn btn-outline-secondary" type="button" onclick="searchPlayer()">검색</button>
 										</div>
@@ -428,12 +428,14 @@
 	<footer class="footer mt-auto py-3">
 		<div class="container">
 			<span class="text-muted">FIFA ONLINE 4 (Data based on NEXON DEVELOPERS)</span>
-			<a href="siteExplain"><span class="text-muted">Site Explain</span></a>
 		</div>
 		<div class="container">
 			<span class="text-muted">TOTAL : ${countAllVisitors}명</span>
 			<span class="text-muted"> & </span>
 			<span class="text-muted">TODAY : ${countTodayVisitors}명</span>
+		</div>
+		<div>
+			<a href="siteExplain"><span class="text-muted">사이트 설명(Site Explain)</span></a>		
 		</div>
 	</footer>
 

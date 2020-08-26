@@ -35,7 +35,9 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
 	
     <script type="text/javascript">
-    	var datGlobal = null;
+	    var dataGlobal = null;
+	    var palyerGlobal0 = null;
+	    var palyerGlobal1 = null;
     	
    		function numberFormat(inputNumber) {
     	   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -149,7 +151,7 @@
 				        data: queryString,
 				        success:function(data){
 				        	console.log(data);
-				        	datGlobal = data;
+				        	dataGlobal = data;
 
 				        	if(data[0].userFindByNickNameCode != '200'){
 				        		alert('정보가 없거나, 비정상적인 호출입니다');
@@ -294,83 +296,88 @@
 		function userMatchClick(i) {
 			$("#modalContents").empty();
 			
-			console.log(datGlobal[3][i]);
+			console.log(dataGlobal[3][i]);
 			
-			if(datGlobal[3][i].matchInfo.length > 1){
-				if(datGlobal[3][i].matchInfo[0].matchDetail.matchResult == '승'){
+			if(dataGlobal[3][i].matchInfo.length == 2){
+				palyerGlobal0 = dataGlobal[3][i].matchInfo[0].player;
+				palyerGlobal1 = dataGlobal[3][i].matchInfo[1].player;
+			}
+			
+			if(dataGlobal[3][i].matchInfo.length > 1){
+				if(dataGlobal[3][i].matchInfo[0].matchDetail.matchResult == '승'){
 					$("#user0Nickname").css("color","blue");
 				}
-				else if(datGlobal[3][i].matchInfo[0].matchDetail.matchResult == '패'){
+				else if(dataGlobal[3][i].matchInfo[0].matchDetail.matchResult == '패'){
 					$("#user0Nickname").css("color","red");
 				}
 				else{
 					$("#user0Nickname").css("color","black");
 				}
-				$("#user0Nickname").html(datGlobal[3][i].matchInfo[0].nickname);
-				$("#user0Nickname").append(' [' + datGlobal[3][i].matchInfo[0].matchDetail.matchResult + ']');
-				$("#user0Goal").html(datGlobal[3][i].matchInfo[0].shoot.goalTotal);
-				$("#user0Shoot").html(datGlobal[3][i].matchInfo[0].shoot.shootTotal);
-				$("#user0PenaltyKick").html(datGlobal[3][i].matchInfo[0].shoot.shootPenaltyKick);
-				$("#user0EffectiveShoot").html(datGlobal[3][i].matchInfo[0].shoot.effectiveShootTotal);
+				$("#user0Nickname").html(dataGlobal[3][i].matchInfo[0].nickname);
+				$("#user0Nickname").append(' [' + dataGlobal[3][i].matchInfo[0].matchDetail.matchResult + ']');
+				$("#user0Goal").html(dataGlobal[3][i].matchInfo[0].shoot.goalTotal);
+				$("#user0Shoot").html(dataGlobal[3][i].matchInfo[0].shoot.shootTotal);
+				$("#user0PenaltyKick").html(dataGlobal[3][i].matchInfo[0].shoot.shootPenaltyKick);
+				$("#user0EffectiveShoot").html(dataGlobal[3][i].matchInfo[0].shoot.effectiveShootTotal);
 				
-				if(datGlobal[3][i].matchInfo[0].pass.passTry == 0){
+				if(dataGlobal[3][i].matchInfo[0].pass.passTry == 0){
 					$("#user0PassSuccess").html('0 %');
 				}
 				else{
-					$("#user0PassSuccess").html((datGlobal[3][i].matchInfo[0].pass.passSuccess / datGlobal[3][i].matchInfo[0].pass.passTry * 100).toFixed(2) + ' %');
+					$("#user0PassSuccess").html((dataGlobal[3][i].matchInfo[0].pass.passSuccess / dataGlobal[3][i].matchInfo[0].pass.passTry * 100).toFixed(2) + ' %');
 				}
-				$("#user0CornerKick").html(datGlobal[3][i].matchInfo[0].matchDetail.cornerKick);
-				$("#user0TackleSuccess").html(datGlobal[3][i].matchInfo[0].defence.tackleSuccess);
-				$("#user0Foul").html(datGlobal[3][i].matchInfo[0].matchDetail.foul);
-				$("#user0YellowCards").html(datGlobal[3][i].matchInfo[0].matchDetail.yellowCards);
-				$("#user0RedCards").html(datGlobal[3][i].matchInfo[0].matchDetail.redCards);
-				$("#user0Injury").html(datGlobal[3][i].matchInfo[0].matchDetail.injury);
-				$("#user0Pause").html(datGlobal[3][i].matchInfo[0].matchDetail.systemPause);
+				$("#user0CornerKick").html(dataGlobal[3][i].matchInfo[0].matchDetail.cornerKick);
+				$("#user0TackleSuccess").html(dataGlobal[3][i].matchInfo[0].defence.tackleSuccess);
+				$("#user0Foul").html(dataGlobal[3][i].matchInfo[0].matchDetail.foul);
+				$("#user0YellowCards").html(dataGlobal[3][i].matchInfo[0].matchDetail.yellowCards);
+				$("#user0RedCards").html(dataGlobal[3][i].matchInfo[0].matchDetail.redCards);
+				$("#user0Injury").html(dataGlobal[3][i].matchInfo[0].matchDetail.injury);
+				$("#user0Pause").html(dataGlobal[3][i].matchInfo[0].matchDetail.systemPause);
 				
 				//상대 구분--------------------
 				
-				if(datGlobal[3][i].matchInfo[1].matchDetail.matchResult == '승'){
+				if(dataGlobal[3][i].matchInfo[1].matchDetail.matchResult == '승'){
 					$("#user1Nickname").css("color","blue");
 				}
-				else if(datGlobal[3][i].matchInfo[1].matchDetail.matchResult == '패'){
+				else if(dataGlobal[3][i].matchInfo[1].matchDetail.matchResult == '패'){
 					$("#user1Nickname").css("color","red");
 				}
 				else{
 					$("#user1Nickname").css("color","black");
 				}
-				$("#user1Nickname").html(datGlobal[3][i].matchInfo[1].nickname);
-				$("#user1Nickname").append(' [' + datGlobal[3][i].matchInfo[1].matchDetail.matchResult + ']');
-				$("#user1Goal").html(datGlobal[3][i].matchInfo[1].shoot.goalTotal);
-				$("#user1Shoot").html(datGlobal[3][i].matchInfo[1].shoot.shootTotal);
-				$("#user1PenaltyKick").html(datGlobal[3][i].matchInfo[1].shoot.shootPenaltyKick);
-				$("#user1EffectiveShoot").html(datGlobal[3][i].matchInfo[1].shoot.effectiveShootTotal);
+				$("#user1Nickname").html(dataGlobal[3][i].matchInfo[1].nickname);
+				$("#user1Nickname").append(' [' + dataGlobal[3][i].matchInfo[1].matchDetail.matchResult + ']');
+				$("#user1Goal").html(dataGlobal[3][i].matchInfo[1].shoot.goalTotal);
+				$("#user1Shoot").html(dataGlobal[3][i].matchInfo[1].shoot.shootTotal);
+				$("#user1PenaltyKick").html(dataGlobal[3][i].matchInfo[1].shoot.shootPenaltyKick);
+				$("#user1EffectiveShoot").html(dataGlobal[3][i].matchInfo[1].shoot.effectiveShootTotal);
 				
-				if(datGlobal[3][i].matchInfo[1].pass.passTry == 0){
+				if(dataGlobal[3][i].matchInfo[1].pass.passTry == 0){
 					$("#user1PassSuccess").html('0 %');
 				}
 				else{
-					$("#user1PassSuccess").html((datGlobal[3][i].matchInfo[1].pass.passSuccess / datGlobal[3][i].matchInfo[1].pass.passTry * 100).toFixed(2) + ' %');
+					$("#user1PassSuccess").html((dataGlobal[3][i].matchInfo[1].pass.passSuccess / dataGlobal[3][i].matchInfo[1].pass.passTry * 100).toFixed(2) + ' %');
 				}
-				$("#user1CornerKick").html(datGlobal[3][i].matchInfo[1].matchDetail.cornerKick);
-				$("#user1TackleSuccess").html(datGlobal[3][i].matchInfo[1].defence.tackleSuccess);
-				$("#user1Foul").html(datGlobal[3][i].matchInfo[1].matchDetail.foul);
-				$("#user1YellowCards").html(datGlobal[3][i].matchInfo[1].matchDetail.yellowCards);
-				$("#user1RedCards").html(datGlobal[3][i].matchInfo[1].matchDetail.redCards);
-				$("#user1Injury").html(datGlobal[3][i].matchInfo[1].matchDetail.injury);
-				$("#user1Pause").html(datGlobal[3][i].matchInfo[1].matchDetail.systemPause);
+				$("#user1CornerKick").html(dataGlobal[3][i].matchInfo[1].matchDetail.cornerKick);
+				$("#user1TackleSuccess").html(dataGlobal[3][i].matchInfo[1].defence.tackleSuccess);
+				$("#user1Foul").html(dataGlobal[3][i].matchInfo[1].matchDetail.foul);
+				$("#user1YellowCards").html(dataGlobal[3][i].matchInfo[1].matchDetail.yellowCards);
+				$("#user1RedCards").html(dataGlobal[3][i].matchInfo[1].matchDetail.redCards);
+				$("#user1Injury").html(dataGlobal[3][i].matchInfo[1].matchDetail.injury);
+				$("#user1Pause").html(dataGlobal[3][i].matchInfo[1].matchDetail.systemPause);
 			}
 			else{
-				if(datGlobal[3][i].matchInfo[0].matchDetail.matchResult == '승'){
+				if(dataGlobal[3][i].matchInfo[0].matchDetail.matchResult == '승'){
 					$("#user0Nickname").css("color","blue");
 				}
-				else if(datGlobal[3][i].matchInfo[0].matchDetail.matchResult == '패'){
+				else if(dataGlobal[3][i].matchInfo[0].matchDetail.matchResult == '패'){
 					$("#user0Nickname").css("color","red");
 				}
 				else{
 					$("#user0Nickname").css("color","black");
 				}
-				$("#user0Nickname").html(datGlobal[3][i].matchInfo[0].nickname);
-				$("#user0Nickname").append(' [' + datGlobal[3][i].matchInfo[0].matchDetail.matchResult + ']');
+				$("#user0Nickname").html(dataGlobal[3][i].matchInfo[0].nickname);
+				$("#user0Nickname").append(' [' + dataGlobal[3][i].matchInfo[0].matchDetail.matchResult + ']');
 				$("#user0Goal").html(0);
 				$("#user0Shoot").html(0);
 				$("#user0PenaltyKick").html(0);
@@ -405,6 +412,29 @@
 			}
 			
 			$("#myModal").modal('show');
+		}
+		
+		function playerInfo() {
+			console.log(palyerGlobal0);
+			console.log(palyerGlobal1);
+			
+			$("#test0").html('');
+			$("#test1").html('');
+			
+			if(palyerGlobal0 != null){
+				for(var index = 0; index < palyerGlobal0.length; index++){
+					$("#test0").append('<p>');
+						$("#test0").append(palyerGlobal0[index].spGrade+', '+palyerGlobal0[index].spId+', '+palyerGlobal0[index].spPosition);
+					$("#test0").append('</p>');
+					
+					$("#test1").append('<p>');
+						$("#test1").append(palyerGlobal1[index].spGrade+', '+palyerGlobal1[index].spId+', '+palyerGlobal1[index].spPosition);
+					$("#test1").append('</p>');				
+				}
+			}
+			$("#axe0").html('a');
+			$("#axe1").html('b');
+			$("#playerModal").modal('show');
 		}
 	</script>
 	<style>
@@ -476,7 +506,7 @@
 							<div class="form-group" style="text-align: left;">
 								<label for="exampleFormControlInput1">유저 닉네임</label>
 								<div class="input-group">
-									<input type="text" class="form-control" id="nickNameSearch" name="nickNameSearch" value="" placeholder="닉네임을 입력해주세요" maxlength="50"
+									<input type="text" class="form-control" id="nickNameSearch" name="nickNameSearch" value="허총무" placeholder="닉네임을 입력해주세요" maxlength="50"
 								  		onkeypress="if(event.keyCode == 13){enterPress();}" aria-label="Recipient's username" aria-describedby="basic-addon2">
 								  	<div class="input-group-append">
 								  		<select id="matchType" class="custom-select">
@@ -564,12 +594,14 @@
 	<footer class="footer mt-auto py-3">
 		<div class="container">
 			<span class="text-muted">FIFA ONLINE 4 (Data based on NEXON DEVELOPERS)</span>
-			<a href="siteExplain"><span class="text-muted">Site Explain</span></a>
 		</div>
 		<div class="container">
 			<span class="text-muted">TOTAL : ${countAllVisitors}명</span>
 			<span class="text-muted"> & </span>
 			<span class="text-muted">TODAY : ${countTodayVisitors}명</span>
+		</div>
+		<div>
+			<a href="siteExplain"><span class="text-muted">사이트 설명(Site Explain)</span></a>		
 		</div>
 	</footer>
 	
@@ -652,7 +684,47 @@
 							<div class="col" style="background-color: #BCB7B6;">경기 멈춤</div>
 							<div class="col" id="user1Pause" style="background-color: #F0EEED;"></div>
 						</div>
+						
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" style="background-color: #F0EEED;"><button id="user0Player" onclick="playerInfo()">00000000</button></div>
+							<div class="col" style="background-color: #BCB7B6;">선수단 정보</div>
+							<div class="col" style="background-color: #F0EEED;"><button id="user1Player" onclick="playerInfo()">11111111</button></div>
+						</div>
 					</main>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade bd-example-modal-lg" id="playerModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+			
+				<div class="modal-header">
+					<h5 class="modal-title">zzz</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+						<div class="col" id="test0" style="background-color: #F0EEED;"></div>
+						<div class="col" style="background-color: #BCB7B6;">test</div>
+						<div class="col" id="test1" style="background-color: #F0EEED;"></div>
+					</div>
+					<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+						<div class="col" id="axe0" style="background-color: #F0EEED;"></div>
+						<div class="col" style="background-color: #BCB7B6;">axe</div>
+						<div class="col" id="axe1" style="background-color: #F0EEED;"></div>
+					</div>
+					<p>그래프에 표시되지 않는 선수는 데이터가 없는 경우입니다</p>
+					<p>그래프가 잘린다면 <strong>"그래프 조정"</strong> 버튼을 눌러주세요</p>
 				</div>
 				
 				<div class="modal-footer">

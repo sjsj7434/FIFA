@@ -23,9 +23,9 @@ import com.game.fifa.vo.FO4announcementVO;
 public class AnnouncementController {
 	
 	@Autowired
-	FO4visitorSessionService visitorSessionService;
+	FO4visitorSessionService visitorSessionService;//방문자 세션 관련
 	@Autowired
-	FO4announcementService announcementService;
+	FO4announcementService announcementService;//공지사항 관련
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/announcement", method = {RequestMethod.GET, RequestMethod.POST})
