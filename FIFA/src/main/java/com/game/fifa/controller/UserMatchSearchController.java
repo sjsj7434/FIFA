@@ -1,6 +1,7 @@
 package com.game.fifa.controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,18 +11,23 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.game.fifa.customClass.MatchInfoAPI;
 import com.game.fifa.customClass.UserInfoAPI;
+import com.game.fifa.service.FO4playerService.FO4playerService;
 import com.game.fifa.service.FO4visitorSessionService.FO4visitorSessionService;
+import com.game.fifa.vo.FO4playerVO;
 
 @Controller
 public class UserMatchSearchController {
 	@Autowired
 	FO4visitorSessionService visitorSessionService;
+	@Autowired
+	FO4playerService playerService;
 	
 	@RequestMapping(value = "/userMatchSearch", method = RequestMethod.GET)
 	public String userMatchSearch(Model model) {
@@ -73,5 +79,19 @@ public class UserMatchSearchController {
 		}
 		
 		return jsonArray;
-	}	
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/searchPlayerList", method = RequestMethod.POST)
+	@ResponseBody
+	public JSONArray searchPlayerList(Model model, HttpServletRequest request, @RequestBody Map<String, Object> map) throws IOException, ParseException {
+		JSONArray jsonArray = new JSONArray();
+		
+		for(int index = 0; index < map.size(); index++) {
+			FO4playerVO vo = playerService.getPlayerByspid(map.get(Integer.toString(index)).toString());
+			jsonArray.add(vo);
+		}
+		
+		return jsonArray;
+	}
 }

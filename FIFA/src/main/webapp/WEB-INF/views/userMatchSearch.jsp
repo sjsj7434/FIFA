@@ -36,8 +36,8 @@
 	
     <script type="text/javascript">
 	    var dataGlobal = null;
-	    var palyerGlobal0 = null;
-	    var palyerGlobal1 = null;
+	    var playerGlobal0 = null;
+	    var playerGlobal1 = null;
     	
    		function numberFormat(inputNumber) {
     	   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -299,8 +299,8 @@
 			console.log(dataGlobal[3][i]);
 			
 			if(dataGlobal[3][i].matchInfo.length == 2){
-				palyerGlobal0 = dataGlobal[3][i].matchInfo[0].player;
-				palyerGlobal1 = dataGlobal[3][i].matchInfo[1].player;
+				playerGlobal0 = dataGlobal[3][i].matchInfo[0].player;
+				playerGlobal1 = dataGlobal[3][i].matchInfo[1].player;
 			}
 			
 			if(dataGlobal[3][i].matchInfo.length > 1){
@@ -415,26 +415,83 @@
 		}
 		
 		function playerInfo() {
-			console.log(palyerGlobal0);
-			console.log(palyerGlobal1);
+			var playerList = {};
 			
-			$("#test0").html('');
-			$("#test1").html('');
-			
-			if(palyerGlobal0 != null){
-				for(var index = 0; index < palyerGlobal0.length; index++){
-					$("#test0").append('<p>');
-						$("#test0").append(palyerGlobal0[index].spGrade+', '+palyerGlobal0[index].spId+', '+palyerGlobal0[index].spPosition);
-					$("#test0").append('</p>');
-					
-					$("#test1").append('<p>');
-						$("#test1").append(palyerGlobal1[index].spGrade+', '+palyerGlobal1[index].spId+', '+palyerGlobal1[index].spPosition);
-					$("#test1").append('</p>');				
-				}
+			for(var index = 0; index < playerGlobal0.length; index++){
+				playerList[index] = playerGlobal0[index].spId;
 			}
-			$("#axe0").html('a');
-			$("#axe1").html('b');
-			$("#playerModal").modal('show');
+			console.log(playerList);
+			
+			$.ajax({
+				url : "searchPlayerList",
+				type : 'POST',
+				data : JSON.stringify(playerList),
+				dataType : 'json',
+				contentType : "application/json;",
+				success : function(data){
+					console.log(data);
+					
+					$("#test0").html('');
+					$("#test1").html('');
+					
+					if(playerGlobal0 != null){
+						for(var index = 0; index < data.length; index++){
+							if(playerGlobal0[index].spPosition != 28){
+								switch (playerGlobal0[index].spPosition) {
+								case 0:
+									$("#GK").html(data[index].name);
+									break;
+								case 1:
+									$("#SW").html(data[index].name);
+									break;
+								case 2:
+									$("#RWB").html(data[index].name);
+									break;
+								case 3:
+									$("#RB").html(data[index].name);
+									break;
+								case 23:
+									$("#RW").html(data[index].name);
+									break;
+								case 24:
+									$("#RS").html(data[index].name);
+									break;
+								case 25:
+									$("#ST").html(data[index].name);
+									break;
+								case 26:
+									$("#LS").html(data[index].name);
+									break;
+								case 27:
+									$("#LW").html(data[index].name);
+									break;
+								default:
+									break;
+								}
+								$("#test0").append(
+									'<p align="left">' +
+										'<img src="'+ data[index].seasonimg +'"/>'+data[index].name +
+									'</p>'
+								);
+							}
+							else{
+								$("#test1").append(
+									'<p align="left"">' +
+										'<img src="'+ data[index].seasonimg +'"/>'+data[index].name +
+									'</p>'
+								);
+							}
+						}
+					}
+					$("#div0").html('선발');
+					$("#div1").html('후보');
+					$("#playerModal").modal('show');
+				},
+				error : function(error){
+					alert(error);
+				}				
+			})
+			//console.log(playerGlobal0);
 		}
 	</script>
 	<style>
@@ -502,7 +559,7 @@
 								<p style="color: red;"><strong>*경기 상세 정보 개발중(2020/08/11~)</strong></p>
 							  	<hr class="my-4">
 							</div>
-							<input type="hidden" name="post_writer" id="post_writer">
+							
 							<div class="form-group" style="text-align: left;">
 								<label for="exampleFormControlInput1">유저 닉네임</label>
 								<div class="input-group">
@@ -706,7 +763,7 @@
 			<div class="modal-content">
 			
 				<div class="modal-header">
-					<h5 class="modal-title">zzz</h5>
+					<h5 class="modal-title">선수단 정보</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -714,17 +771,146 @@
 
 				<div class="modal-body">
 					<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+						<div class="col" id="div0" style="background-color: #F0EEED;"></div>
+						<div class="col" style="background-color: #BCB7B6;">구분</div>
+						<div class="col" id="div1" style="background-color: #F0EEED;"></div>
+					</div>
+					
+					<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 						<div class="col" id="test0" style="background-color: #F0EEED;"></div>
-						<div class="col" style="background-color: #BCB7B6;">test</div>
+						<div class="col" style="background-color: #BCB7B6;">선수단</div>
 						<div class="col" id="test1" style="background-color: #F0EEED;"></div>
 					</div>
-					<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
-						<div class="col" id="axe0" style="background-color: #F0EEED;"></div>
-						<div class="col" style="background-color: #BCB7B6;">axe</div>
-						<div class="col" id="axe1" style="background-color: #F0EEED;"></div>
+					
+					<div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" style="background-color: #BCB7B6;">LS</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" style="background-color: #BCB7B6;">ST</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" style="background-color: #BCB7B6;">RS</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" style="background-color: #F0EEED;">LW</div>
+							<div class="col" style="background-color: #F0EEED;"></div>
+							<div class="col" style="background-color: #F0EEED;">LF</div>
+							<div class="col" style="background-color: #F0EEED;">CF</div>
+							<div class="col" style="background-color: #F0EEED;">RF</div>
+							<div class="col" style="background-color: #F0EEED;"></div>
+							<div class="col" style="background-color: #F0EEED;">RW</div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" style="background-color: #BCB7B6;">LAM</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" style="background-color: #BCB7B6;">CAM</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" style="background-color: #BCB7B6;">RAM</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" style="background-color: #F0EEED;"></div>
+							<div class="col" style="background-color: #F0EEED;">LM</div>
+							<div class="col" style="background-color: #F0EEED;">LCM</div>
+							<div class="col" style="background-color: #F0EEED;">CM</div>
+							<div class="col" style="background-color: #F0EEED;">RCM</div>
+							<div class="col" style="background-color: #F0EEED;">RM</div>
+							<div class="col" style="background-color: #F0EEED;"></div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" style="background-color: #BCB7B6;">LDM</div>
+							<div class="col" style="background-color: #BCB7B6;">CDM</div>
+							<div class="col" style="background-color: #BCB7B6;">RDM</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" style="background-color: #F0EEED;">LWB</div>
+							<div class="col" style="background-color: #F0EEED;">LB</div>
+							<div class="col" style="background-color: #F0EEED;">LCB</div>
+							<div class="col" style="background-color: #F0EEED;">CB</div>
+							<div class="col" style="background-color: #F0EEED;">RCB</div>
+							<div class="col" style="background-color: #F0EEED;">RB</div>
+							<div class="col" style="background-color: #F0EEED;">RWB</div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" style="background-color: #BCB7B6;">SW</div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" style="background-color: #F0EEED;">GK</div>
+						</div>
 					</div>
-					<p>그래프에 표시되지 않는 선수는 데이터가 없는 경우입니다</p>
-					<p>그래프가 잘린다면 <strong>"그래프 조정"</strong> 버튼을 눌러주세요</p>
+					
+					<div>
+						<hr class='my-4'/>
+					</div>
+					
+					<div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" id="LS" style="background-color: #BCB7B6;">LS</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" id="ST" style="background-color: #BCB7B6;">ST</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" id="RS" style="background-color: #BCB7B6;">RS</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" id="LW" style="background-color: #F0EEED;">LW</div>
+							<div class="col" style="background-color: #F0EEED;"></div>
+							<div class="col" id="LF" style="background-color: #F0EEED;">LF</div>
+							<div class="col" id="CF" style="background-color: #F0EEED;">CF</div>
+							<div class="col" id="RF" style="background-color: #F0EEED;">RF</div>
+							<div class="col" style="background-color: #F0EEED;"></div>
+							<div class="col" id="RW" style="background-color: #F0EEED;">RW</div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" id="LAM" style="background-color: #BCB7B6;">LAM</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" id="CAM" style="background-color: #BCB7B6;">CAM</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" id="RAM" style="background-color: #BCB7B6;">RAM</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" style="background-color: #F0EEED;"></div>
+							<div class="col" id="LM" style="background-color: #F0EEED;">LM</div>
+							<div class="col" id="LCM" style="background-color: #F0EEED;">LCM</div>
+							<div class="col" id="CM" style="background-color: #F0EEED;">CM</div>
+							<div class="col" id="RCM" style="background-color: #F0EEED;">RCM</div>
+							<div class="col" id="RM" style="background-color: #F0EEED;">RM</div>
+							<div class="col" style="background-color: #F0EEED;"></div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" id="LDM" style="background-color: #BCB7B6;">LDM</div>
+							<div class="col" id="CDM" style="background-color: #BCB7B6;">CDM</div>
+							<div class="col" id="RDM" style="background-color: #BCB7B6;">RDM</div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+							<div class="col" style="background-color: #BCB7B6;"></div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" id="LWB" style="background-color: #F0EEED;">LWB</div>
+							<div class="col" id="LB" style="background-color: #F0EEED;">LB</div>
+							<div class="col" id="LCB" style="background-color: #F0EEED;">LCB</div>
+							<div class="col" id="CB" style="background-color: #F0EEED;">CB</div>
+							<div class="col" id="RCB" style="background-color: #F0EEED;">RCB</div>
+							<div class="col" id="RB" style="background-color: #F0EEED;">RB</div>
+							<div class="col" id="RWB" style="background-color: #F0EEED;">RWB</div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" id="SW" style="background-color: #BCB7B6;">SW</div>
+						</div>
+						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
+							<div class="col" id="GK" style="background-color: #F0EEED;">GK</div>
+						</div>
+					</div>
 				</div>
 				
 				<div class="modal-footer">
