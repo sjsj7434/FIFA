@@ -433,6 +433,34 @@
 					
 					$("#test0").html('');
 					$("#test1").html('');
+					$("#GK").html('');
+					$("#SW").html('');
+					$("#RWB").html('');
+					$("#RB").html('');
+					$("#RCB").html('');
+					$("#CB").html('');
+					$("#LCM").html('');
+					$("#LB").html('');
+					$("#LWB").html('');
+					$("#RDM").html('');
+					$("#CDM").html('');
+					$("#LDM").html('');
+					$("#RM").html('');
+					$("#RCM").html('');
+					$("#CM").html('');
+					$("#LCM").html('');
+					$("#LM").html('');
+					$("#RAM").html('');
+					$("#CAM").html('');
+					$("#LAM").html('');
+					$("#RF").html('');
+					$("#CF").html('');
+					$("#LF").html('');
+					$("#RW").html('');
+					$("#RS").html('');
+					$("#ST").html('');
+					$("#LS").html('');
+					$("#LW").html('');
 					
 					if(playerGlobal0 != null){
 						for(var index = 0; index < data.length; index++){
@@ -449,6 +477,65 @@
 									break;
 								case 3:
 									$("#RB").html(data[index].name);
+									break;
+								case 4:
+									$("#RCB").html(data[index].name);
+									break;
+								case 5:
+									$("#CB").html(data[index].name);
+									break;
+								case 6:
+									$("#LCB").html(data[index].name);
+									break;
+								case 7:
+									$("#LB").html(data[index].name);
+									break;
+								case 8:
+									$("#LWB").html(data[index].name);
+									break;
+									
+								case 9:
+									$("#RDM").html(data[index].name);
+									break;
+								case 10:
+									$("#CDM").html(data[index].name);
+									break;
+								case 11:
+									$("#LDM").html(data[index].name);
+									break;
+								case 12:
+									$("#RM").html(data[index].name);
+									break;
+								case 13:
+									$("#RCM").html(data[index].name);
+									break;
+								case 14:
+									$("#CM").html(data[index].name);
+									break;
+								case 15:
+									$("#LCM").html(data[index].name);
+									break;
+								case 16:
+									$("#LM").html(data[index].name);
+									break;
+								case 17:
+									$("#RAM").html(data[index].name);
+									break;
+								case 18:
+									$("#CAM").html(data[index].name);
+									break;
+								case 19:
+									$("#LAM").html(data[index].name);
+									break;
+									
+								case 20:
+									$("#RF").html(data[index].name);
+									break;
+								case 21:
+									$("#CF").html(data[index].name);
+									break;
+								case 22:
+									$("#LF").html(data[index].name);
 									break;
 								case 23:
 									$("#RW").html(data[index].name);
@@ -783,132 +870,69 @@
 					</div>
 					
 					<div>
-						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
-							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" style="background-color: #BCB7B6;">LS</div>
-							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" style="background-color: #BCB7B6;">ST</div>
-							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" style="background-color: #BCB7B6;">RS</div>
-							<div class="col" style="background-color: #BCB7B6;"></div>
-						</div>
-						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
-							<div class="col" style="background-color: #F0EEED;">LW</div>
-							<div class="col" style="background-color: #F0EEED;"></div>
-							<div class="col" style="background-color: #F0EEED;">LF</div>
-							<div class="col" style="background-color: #F0EEED;">CF</div>
-							<div class="col" style="background-color: #F0EEED;">RF</div>
-							<div class="col" style="background-color: #F0EEED;"></div>
-							<div class="col" style="background-color: #F0EEED;">RW</div>
-						</div>
-						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
-							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" style="background-color: #BCB7B6;">LAM</div>
-							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" style="background-color: #BCB7B6;">CAM</div>
-							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" style="background-color: #BCB7B6;">RAM</div>
-							<div class="col" style="background-color: #BCB7B6;"></div>
-						</div>
-						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
-							<div class="col" style="background-color: #F0EEED;"></div>
-							<div class="col" style="background-color: #F0EEED;">LM</div>
-							<div class="col" style="background-color: #F0EEED;">LCM</div>
-							<div class="col" style="background-color: #F0EEED;">CM</div>
-							<div class="col" style="background-color: #F0EEED;">RCM</div>
-							<div class="col" style="background-color: #F0EEED;">RM</div>
-							<div class="col" style="background-color: #F0EEED;"></div>
-						</div>
-						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
-							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" style="background-color: #BCB7B6;">LDM</div>
-							<div class="col" style="background-color: #BCB7B6;">CDM</div>
-							<div class="col" style="background-color: #BCB7B6;">RDM</div>
-							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" style="background-color: #BCB7B6;"></div>
-						</div>
-						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
-							<div class="col" style="background-color: #F0EEED;">LWB</div>
-							<div class="col" style="background-color: #F0EEED;">LB</div>
-							<div class="col" style="background-color: #F0EEED;">LCB</div>
-							<div class="col" style="background-color: #F0EEED;">CB</div>
-							<div class="col" style="background-color: #F0EEED;">RCB</div>
-							<div class="col" style="background-color: #F0EEED;">RB</div>
-							<div class="col" style="background-color: #F0EEED;">RWB</div>
-						</div>
-						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
-							<div class="col" style="background-color: #BCB7B6;">SW</div>
-						</div>
-						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
-							<div class="col" style="background-color: #F0EEED;">GK</div>
-						</div>
-					</div>
-					
-					<div>
 						<hr class='my-4'/>
 					</div>
 					
 					<div>
 						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" id="LS" style="background-color: #BCB7B6;">LS</div>
+							<div class="col" id="LS" style="background-color: #BCB7B6;"></div>
 							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" id="ST" style="background-color: #BCB7B6;">ST</div>
+							<div class="col" id="ST" style="background-color: #BCB7B6;"></div>
 							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" id="RS" style="background-color: #BCB7B6;">RS</div>
+							<div class="col" id="RS" style="background-color: #BCB7B6;"></div>
 							<div class="col" style="background-color: #BCB7B6;"></div>
 						</div>
 						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" id="LW" style="background-color: #F0EEED;">LW</div>
 							<div class="col" style="background-color: #F0EEED;"></div>
-							<div class="col" id="LF" style="background-color: #F0EEED;">LF</div>
-							<div class="col" id="CF" style="background-color: #F0EEED;">CF</div>
-							<div class="col" id="RF" style="background-color: #F0EEED;">RF</div>
+							<div class="col" id="LF" style="background-color: #F0EEED;"></div>
+							<div class="col" id="CF" style="background-color: #F0EEED;"></div>
+							<div class="col" id="RF" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #F0EEED;"></div>
-							<div class="col" id="RW" style="background-color: #F0EEED;">RW</div>
+							<div class="col" id="RW" style="background-color: #F0EEED;"></div>
 						</div>
 						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" id="LAM" style="background-color: #BCB7B6;">LAM</div>
+							<div class="col" id="LAM" style="background-color: #BCB7B6;"></div>
 							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" id="CAM" style="background-color: #BCB7B6;">CAM</div>
+							<div class="col" id="CAM" style="background-color: #BCB7B6;"></div>
 							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" id="RAM" style="background-color: #BCB7B6;">RAM</div>
+							<div class="col" id="RAM" style="background-color: #BCB7B6;"></div>
 							<div class="col" style="background-color: #BCB7B6;"></div>
 						</div>
 						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" style="background-color: #F0EEED;"></div>
-							<div class="col" id="LM" style="background-color: #F0EEED;">LM</div>
-							<div class="col" id="LCM" style="background-color: #F0EEED;">LCM</div>
-							<div class="col" id="CM" style="background-color: #F0EEED;">CM</div>
-							<div class="col" id="RCM" style="background-color: #F0EEED;">RCM</div>
-							<div class="col" id="RM" style="background-color: #F0EEED;">RM</div>
+							<div class="col" id="LM" style="background-color: #F0EEED;"></div>
+							<div class="col" id="LCM" style="background-color: #F0EEED;"></div>
+							<div class="col" id="CM" style="background-color: #F0EEED;"></div>
+							<div class="col" id="RCM" style="background-color: #F0EEED;"></div>
+							<div class="col" id="RM" style="background-color: #F0EEED;"></div>
 							<div class="col" style="background-color: #F0EEED;"></div>
 						</div>
 						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
 							<div class="col" style="background-color: #BCB7B6;"></div>
 							<div class="col" style="background-color: #BCB7B6;"></div>
-							<div class="col" id="LDM" style="background-color: #BCB7B6;">LDM</div>
-							<div class="col" id="CDM" style="background-color: #BCB7B6;">CDM</div>
-							<div class="col" id="RDM" style="background-color: #BCB7B6;">RDM</div>
+							<div class="col" id="LDM" style="background-color: #BCB7B6;"></div>
+							<div class="col" id="CDM" style="background-color: #BCB7B6;"></div>
+							<div class="col" id="RDM" style="background-color: #BCB7B6;"></div>
 							<div class="col" style="background-color: #BCB7B6;"></div>
 							<div class="col" style="background-color: #BCB7B6;"></div>
 						</div>
 						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
-							<div class="col" id="LWB" style="background-color: #F0EEED;">LWB</div>
-							<div class="col" id="LB" style="background-color: #F0EEED;">LB</div>
-							<div class="col" id="LCB" style="background-color: #F0EEED;">LCB</div>
-							<div class="col" id="CB" style="background-color: #F0EEED;">CB</div>
-							<div class="col" id="RCB" style="background-color: #F0EEED;">RCB</div>
-							<div class="col" id="RB" style="background-color: #F0EEED;">RB</div>
-							<div class="col" id="RWB" style="background-color: #F0EEED;">RWB</div>
+							<div class="col" id="LWB" style="background-color: #F0EEED;"></div>
+							<div class="col" id="LB" style="background-color: #F0EEED;"></div>
+							<div class="col" id="LCB" style="background-color: #F0EEED;"></div>
+							<div class="col" id="CB" style="background-color: #F0EEED;"></div>
+							<div class="col" id="RCB" style="background-color: #F0EEED;"></div>
+							<div class="col" id="RB" style="background-color: #F0EEED;"></div>
+							<div class="col" id="RWB" style="background-color: #F0EEED;"></div>
 						</div>
 						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
-							<div class="col" id="SW" style="background-color: #BCB7B6;">SW</div>
+							<div class="col" id="SW" style="background-color: #BCB7B6;"></div>
 						</div>
 						<div class="row" style="padding-top: 5px; padding-left: 20px; padding-right: 20px;">
-							<div class="col" id="GK" style="background-color: #F0EEED;">GK</div>
+							<div class="col" id="GK" style="background-color: #F0EEED;"></div>
 						</div>
 					</div>
 				</div>
