@@ -10,9 +10,10 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 		
 	<!-- MySQL이 기본적으로 8시간동안 요청이 없으면 커넥션을 해지하고 풀링을 해지 -->
+	<!--  View 지원을 제외한 bean을 설정, 예) Service / Repository(DAO) / DB/ log -->
 
 	<!-- Service 용 -->
-<!-- 	
+	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://rasberry1.cormbfdskqps.ap-northeast-2.rds.amazonaws.com:3306/aop_lsj" />
@@ -22,11 +23,11 @@
         <property name="validationQuery" value="SELECT 1" />
         <property name="testWhileIdle" value="true" />
 	</bean>
- -->	
+	
 	<!-- Service 용 -->
 	
 	<!-- Test 용 -->
-
+<!-- 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://localhost:3306/springdb?serverTimezone=UTC" />
@@ -36,14 +37,14 @@
         <property name="validationQuery" value="SELECT 1" />
         <property name="testWhileIdle" value="true" />
 	</bean>
-
+ -->
 	<!-- Test 용 -->
 	
 	<bean id="FO4visitorSessionDAOImpl" class="com.game.fifa.dao.FO4visitorSessionDAO.FO4visitorSessionDAOImpl"></bean>
 
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 	     <property name="dataSource" ref="dataSource"></property>
-	</bean>     
+	</bean>
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
@@ -54,6 +55,6 @@
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
 	</bean>
    
-	<context:component-scan base-package="com.game.fifa" />
+	<context:component-scan base-package="com.game.fifa" /><!-- 이거 없어도 되는거 아니야? -->
 
 </beans>

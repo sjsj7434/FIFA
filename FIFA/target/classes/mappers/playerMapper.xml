@@ -5,7 +5,7 @@
 <mapper namespace="playerMapper">
 
 	<!-- Service 용 -->
-<!-- 
+
 	<select id="selectPlayerByName" resultType="com.game.fifa.vo.FO4playerVO">
 		SELECT 
 			spid.id, 
@@ -139,11 +139,11 @@
 			#{referer}
 		)
 	</insert>
- -->
+	
 	<!-- Service 용 -->
 	
 	<!-- Test 용 -->
-
+<!-- 
 	<select id="selectPlayerByName" resultType="com.game.fifa.vo.FO4playerVO">
 		SELECT 
 			spid.id, 
@@ -277,7 +277,7 @@
 			#{referer}
 		)
 	</insert>
-
+ -->
 	<!-- Test 용 -->
 	
 </mapper>
