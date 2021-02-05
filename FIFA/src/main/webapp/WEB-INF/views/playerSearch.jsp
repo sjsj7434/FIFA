@@ -36,14 +36,15 @@
 	
 	<script type="text/javascript">
 		google.charts.load('current', {'packages':['bar']});
-    </script>
-	
+	</script>
     <script type="text/javascript">
 	    function imageError(data) {
 			$(data)[0].src = "resources/image/error.png";
 		}
 	    
 		function graphAjaxButton() {
+			$("#myModal").modal('show');
+			
 			var queryString = $("form[name=sendForm]").serialize();
 	
 			$.ajax({
@@ -58,43 +59,37 @@
 		        		alert('정보가 없거나, 비정상적인 호출입니다');
 		        	}
 		        	else{
-		        		var chartData = google.visualization.arrayToDataTable([
-			                ['선수이름', '블록(개)', '태클(개)', '패스성공률(%)', '슛(개)', '유효슛(개)', '골(개)', '어시스트(개)'],
-			                [' ', 0, 0, 0, 0, 0, 0, 0]
-						]);
-			            
-			            for(var index = 0; index < data.length; index++){
-			            	chartData.fg.push({
-			            		'c':[
-			            			{'v':data[index].playerName + ' ' + data[index].playerClassname.split('(')[0] + '(' + data[index].status.matchCount + '경기 뜀)'},//시즌 명이 너무 길어서 괄호 만나면 자르기
-			            			{'v':data[index].status.block},
-			            			{'v':data[index].status.tackle},
-			            			{'v':data[index].status.passSuccess/data[index].status.passTry},
-			            			{'v':data[index].status.shoot},
-			            			{'v':data[index].status.effectiveShoot},
-			            			{'v':data[index].status.goal},
-			            			{'v':data[index].status.assist}
-			            		],
-			            		'p':undefined
-			            		});	
-			            }
+		        		let arrayForData = [
+		        			['선수이름', '블록(개)', '태클(개)', '패스성공률(%)', '슛(개)', '유효슛(개)', '골(개)', '어시스트(개)']
+		        		];
+		        		for(var index = 0; index < data.length; index++){
+		        			arrayForData.push(
+		        				[
+		        					data[index].playerName + ' ' + data[index].playerClassname.split('(')[0] + '(' + data[index].status.matchCount + '경기 뜀)',
+		        					data[index].status.block,
+		        					data[index].status.tackle,
+		        					data[index].status.passSuccess/data[index].status.passTry,
+		        					data[index].status.shoot,
+		        					data[index].status.effectiveShoot,
+		        					data[index].status.goal,
+		        					data[index].status.assist
+		        				]
+		        			);
+		        		};
+		        		
+		        		var chartData = google.visualization.arrayToDataTable(arrayForData);
 	
 						var options = {
-							bar: {
-								groupWidth: '80%'
-							},
-							height: chartData.fg.length*200,
-							legend: 'none',
-						  	chart: {
+							bars : 'horizontal',
+							height : data.length * 200,
+							chart: {
 						    	title: '20경기 선수 통계',
-						    	subtitle: 'TOP 10000',
-						  	},
-						  	bars: 'horizontal' // Required for Material Bar Charts.	horizontal	vertical
+						    	subtitle: 'TOP 10000'
+						  	}
 						};
 						var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-						chart.draw(chartData, google.charts.Bar.convertOptions(options));
-						window.addEventListener('resize', function() { chart.draw(chartData, google.charts.Bar.convertOptions(options)); }, false); //화면 크기에 따라 그래프 크기 변경
-						$("#myModal").modal('show');
+						chart.draw(chartData, options);
+						window.addEventListener('resize', function() { chart.draw(chartData, options); }, false); //화면 크기에 따라 그래프 크기 변경
 					}
 				},
 				error : function(request, status, error) {
@@ -104,6 +99,11 @@
 					else {
 						alert("응답코드:" + request.status + "\n내용:" + "에러가 발생했습니다")
 					}
+				},
+				complete : function(){
+					setTimeout(() => {
+						window.dispatchEvent(new Event('resize'));
+					}, 100);
 				}
 			});
 		}
@@ -442,7 +442,6 @@
 	<div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
-			
 				<div class="modal-header">
 					<h5 class="modal-title">그래프</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -467,7 +466,6 @@
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 					<button type="button" class="btn btn-primary" onclick="resizeGraph()">그래프 조정</button>
 				</div>
-				
 			</div>
 		</div>
 	</div>
