@@ -34,8 +34,14 @@
 		          	</ul>
 		        </div>
 		        <script>
-					const pathname = window.location.pathname.split('/');
-					document.getElementById(pathname[2]).classList.add("active");
+		        	const pathName = window.location.pathname.split('/');
+		        	const hostName = window.location.hostname;
+		        	if(hostName === "localhost"){
+						document.getElementById(pathName[2]).classList.add("active");
+		        	}
+		        	else{
+						document.getElementById(pathName[1]).classList.add("active");
+		        	}
 				</script>
 	      	</div>
 		</nav>
