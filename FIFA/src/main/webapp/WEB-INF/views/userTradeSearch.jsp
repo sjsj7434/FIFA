@@ -2,38 +2,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<!DOCTYPE html>
 <html>
 <head>
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-176171640-1"></script>
-	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-	
-	  gtag('config', 'UA-176171640-1');
-	</script>
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	
-	<!-- Open  Graph -->
-	<meta property="og:title" content="피파거시기" />
-	<meta property="og:description" content="피파온라인4의 잡다한 정보" />
-	<meta property="og:type" content="website" />
-	<meta property="og:url" content="http://www.vlvk4.com/" />
-	<meta property="og:image" content="http://www.vlvk4.com/resources/image/F4.png" />
-	<!-- Open  Graph -->
-	
-	<meta name="description" content="피파온라인4 유저 전적 검색, 선수 정보 비교, 유저 거래기록 조회">
-	
-	<meta charset="utf-8">
-	<title>피파거시기</title>
-	<link rel="shortcut icon" type="image/x-icon" href="resources/image/F4.png">
-	
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js" integrity="sha384-XEerZL0cuoUbHE4nZReLT7nx9gQrQreJekYhJD9WNWhH8nEW+0c5qq7aIo2Wl30J" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
-	
     <script type="text/javascript">
    		function numberFormat(inputNumber) {
     	   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -103,6 +74,10 @@
 		}
    		
 		function userTradeSearchAjax(paging) {
+			document.getElementById("loading").innerHTML = "정보를 불러오고 있습니다...";
+			$("#sellTableTbody").empty();
+			$("#buyTableTbody").empty();
+			
 			var RegExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
 			var nickNameSearch = document.getElementById('nickNameSearch').value.replace(/ /gi, '');;
 			document.getElementById('nickName').value = nickNameSearch;
@@ -125,14 +100,17 @@
 				offset.value = parseInt(offset.value) + parseInt(limit.value);
 			}
 			else{
+				document.getElementById("loading").innerHTML = "에러 발생...";
 				alert('에러 발생');
 			}
 			
 			if(nickName == ''){
+				document.getElementById("loading").innerHTML = "검색할 닉네임을 입력해주세요";
 				alert('검색할 닉네임을 입력해주세요');
 			}
 			else{
 				if(RegExp.test(nickName)){
+					document.getElementById("loading").innerHTML = "특수문자는 입력할 수 없습니다";
 					alert('특수문자는 입력할 수 없습니다');
 				}
 				else{
@@ -142,8 +120,8 @@
 				        type:'GET',
 				        data: queryString,
 				        success:function(data){
-				        	if(data[0].userFindByNickNameCode != '200'){
-				        		alert('정보가 없거나, 비정상적인 호출입니다');
+				        	if(data.length === 0 || data[0].userFindByNickNameCode != '200'){
+				        		document.getElementById("loading").innerHTML = "정보가 없거나, 비정상적인 호출입니다";
 				        	}
 				        	else{
 				        		/* 유저 정보 테이블 - 시작 */
@@ -245,15 +223,16 @@
 						            $("#buyTableTbody").append(htmlBuy);
 					            }
 					            /* 구매 테이블 - 끝 */
+					            
+					            document.getElementById("loading").innerHTML = "";
 				        	}
 				        },
 				        error:function(request, status, error){
-				        	/* alert("응답코드:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); */
 				        	if(request.status == 500){
-				        		alert("응답코드:"+request.status+"\n내용:"+"넥슨 서버 내부 에러");
+				        		document.getElementById("loading").innerHTML = "응답코드:"+request.status+"\n내용:"+"넥슨 서버 내부 에러";
 				        	}
 				        	else{
-				        		alert("응답코드:"+request.status+"\n내용:"+"에러가 발생했습니다")
+				        		document.getElementById("loading").innerHTML = "응답코드:"+request.status+"\n내용:"+"에러가 발생했습니다";
 				        	}
 				        }
 				    });
@@ -267,7 +246,12 @@
 		}
 		
 		.footer {
-		  background-color: #f5f5f5;
+			background-color: #f5f5f5;
+			bottom: 0;
+			width: 100%;
+			height: 100px;
+			position: relative;
+			text-align: center;"
 		}
 		
 		.footer > .container {
@@ -277,36 +261,6 @@
 	</style>
 </head>
 <body class="d-flex flex-column h-100" style="text-align: center;">
-	<header>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	      	<div class="container">
-		        <a class="navbar-brand" href="main"><img alt="logo.png" src="resources/image/F4.png" height="35" width="35">피파거시기</a>
-		        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
-		          	<span class="navbar-toggler-icon"></span>
-		        </button>
-		        <div class="collapse navbar-collapse" id="navbarsExample07">
-		          	<ul class="navbar-nav mr-auto">
-			            <li class="nav-item" style="padding-right: 20px;">
-			              	<a class="nav-link" href="announcement">공지사항</a>
-			            </li>
-			            <li class="nav-item" style="padding-right: 20px;">
-			              	<a class="nav-link" href="playerSearch">대장시즌 찾기</a>
-			            </li>
-			            <li class="nav-item active" style="padding-right: 20px;">
-			              	<a class="nav-link" href="userTradeSearch">거래기록 조회</a>
-			            </li>
-			            <li class="nav-item" style="padding-right: 20px;">
-			              	<a class="nav-link" href="userMatchSearch">유저 전적 검색</a>
-			            </li>
-			            <li class="nav-item" style="padding-right: 20px;">
-			              	<a class="nav-link" href="errorReport">오류 신고/건의사항</a>
-			            </li>
-		          	</ul>
-		        </div>
-	      	</div>
-		</nav>
-	</header>
-	
 	<main role="main" class=""><!-- flex-shrink-0 -->
 		<div class="container">
 			<div class="jumbotron">
@@ -360,25 +314,37 @@
 				<input type="hidden" name="offset" id="offset" value="0">
 				<input type="hidden" name="limit" id="limit" value="10">
 			</form>
-			
+
 			<div class="container">
-			  <div class="row">
-			    <div class="col align-self-start"> </div>
-			    <div class="col align-self-center">
-			    	<button type="button" class="btn btn-success" onclick="userTradeSearchAjax(1)"> 이전 </button>
-					<button type="button" class="btn btn-success" onclick="userTradeSearchAjax(2)"> 다음 </button>
-					<div style="padding-bottom: 20px;"></div>
-					<select id="limitSearch" class="custom-select">
-						<option value="10">10개 표시</option>
-						<option value="25">25개 표시</option>
-						<option value="50" selected="selected">50개 표시</option>
-						<option value="100">100개 표시</option>
-					</select>
-			    </div>
-			    <div class="col align-self-end"> </div>
-			  </div>
+				<div class="row">
+					<div class="col align-self-start"></div>
+					<div class="col align-self-center">
+						<button type="button" class="btn btn-success"
+							onclick="userTradeSearchAjax(1)">이전</button>
+						<button type="button" class="btn btn-success"
+							onclick="userTradeSearchAjax(2)">다음</button>
+						<div style="padding-bottom: 20px;"></div>
+						<select id="limitSearch" class="custom-select">
+							<option value="10">10개 표시</option>
+							<option value="25" selected="selected">25개 표시</option>
+							<option value="50">50개 표시</option>
+							<option value="100">100개 표시</option>
+						</select>
+					</div>
+					<div class="col align-self-end"></div>
+				</div>
 			</div>
 			
+			<div style="width: 100%; float: right; margin: 10px;">
+				<div class="container">
+					<div class="row">
+						<div class="col align-self-start"></div>
+						<div id="loading" class="col align-self-center" style="font-size: 20px;"></div>
+						<div class="col align-self-end"></div>
+					</div>
+				</div>
+			</div>
+
 			<div style="width:47%; float:left; padding-left: 25px;">
 				<table class="table table-sm table-striped">
 					<caption id="sellTable" style="text-align: center; color: black; font-size: large; font-weight: bold; caption-side: top;">판매기록</caption>
@@ -397,7 +363,6 @@
 					</tbody>
 				</table>
 			</div>
-			
 			<div style="width:47%; float:right; padding-right: 25px;">
 				<table id="buyTable" class="table table-sm table-striped">
 					<caption style="text-align: center; color: black; font-size: large; font-weight: bold; caption-side: top;">구매기록</caption>
@@ -417,30 +382,21 @@
 				</table>
 			</div>
 		</div>
-	</main>
-	
-	<footer class="footer mt-auto py-3" style="background-color: white;">
-		<div class="container">
-			<div>
-				<button type="button" class="btn btn-success" onclick="userTradeSearchAjax(1)"> 이전 </button>
-				<button type="button" class="btn btn-success" onclick="userTradeSearchAjax(2)"> 다음 </button>
+		
+		<div style="width: 100%; float: right;">
+			<div class="container">
+				<div class="row">
+					<div class="col align-self-start"></div>
+					<div class="col align-self-center">
+						<button type="button" class="btn btn-success" onclick="userTradeSearchAjax(1)">이전</button>
+						<button type="button" class="btn btn-success" onclick="userTradeSearchAjax(2)">다음</button>
+						<div style="padding-bottom: 20px;"></div>
+					</div>
+					<div class="col align-self-end"></div>
+				</div>
 			</div>
 		</div>
-	</footer>
-	
-	<footer class="footer mt-auto py-3">
-		<div class="container">
-			<span class="text-muted">FIFA ONLINE 4 (Data based on NEXON DEVELOPERS)</span>
-		</div>
-		<div class="container">
-			<span class="text-muted">TOTAL : ${countAllVisitors}명</span>
-			<span class="text-muted"> & </span>
-			<span class="text-muted">TODAY : ${countTodayVisitors}명</span>
-		</div>
-		<div>
-			<a href="siteExplain"><span class="text-muted">사이트 설명(Site Explain)</span></a>		
-		</div>
-	</footer>
+	</main>
 	
 	<div class="modal" id="myModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
@@ -461,6 +417,5 @@
 			</div>
 		</div>
 	</div>
-	
 </body>
 </html>

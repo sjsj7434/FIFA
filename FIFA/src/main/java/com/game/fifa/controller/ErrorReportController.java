@@ -29,7 +29,7 @@ public class ErrorReportController {
 		int countTodayVisitors = visitorSessionService.countTodayVisitors();
 		model.addAttribute("countTodayVisitors", countTodayVisitors);
 		
-		return "errorReport";
+		return "errorReport.tiles";
 	}
 	
 	@RequestMapping(value = "/errorReportWrite", method = RequestMethod.POST)
@@ -43,6 +43,6 @@ public class ErrorReportController {
 		
 		errorReportService.insertErrorReport(errorReportVO);
 
-		return "errorReport";
+		return "errorReport.tiles";
 	}
 }

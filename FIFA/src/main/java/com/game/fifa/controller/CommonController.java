@@ -47,7 +47,7 @@ public class CommonController {
 			model.addAttribute("countTodayVisitors", countTodayVisitors);
 		//방문자 counter 관련
 			
-		return "siteExplain";
+		return "siteExplain.tiles";
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -85,7 +85,7 @@ public class CommonController {
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("offset", announcementVO.getOffset());
 		
-		return "announcement";
+		return "announcement.tiles";
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -123,7 +123,7 @@ public class CommonController {
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("offset", announcementVO.getOffset());
 		
-		return "announcement";
+		return "announcement.tiles";
 	}
 
 }

@@ -41,7 +41,7 @@ public class PlayerSearchController {
 		int countTodayVisitors = visitorSessionService.countTodayVisitors();
 		model.addAttribute("countTodayVisitors", countTodayVisitors);
 		
-		return "playerSearch";
+		return "playerSearch.tiles";
 	}
 	
 	@SuppressWarnings("unchecked")

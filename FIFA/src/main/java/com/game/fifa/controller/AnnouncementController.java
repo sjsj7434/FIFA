@@ -62,7 +62,7 @@ public class AnnouncementController {
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("offset", announcementVO.getOffset());
 		
-		return "announcement";
+		return "announcement.tiles";
 	}
 	
 	@SuppressWarnings("unchecked")

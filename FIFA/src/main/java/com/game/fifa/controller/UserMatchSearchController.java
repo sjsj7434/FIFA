@@ -36,7 +36,7 @@ public class UserMatchSearchController {
 		int countTodayVisitors = visitorSessionService.countTodayVisitors();
 		model.addAttribute("countTodayVisitors", countTodayVisitors);
 		
-		return "userMatchSearch";
+		return "userMatchSearch.tiles";
 	}
 	
 	@SuppressWarnings("unchecked")

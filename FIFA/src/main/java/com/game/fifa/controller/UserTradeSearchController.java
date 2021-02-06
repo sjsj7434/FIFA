@@ -34,7 +34,7 @@ public class UserTradeSearchController {
 		int countTodayVisitors = visitorSessionService.countTodayVisitors();
 		model.addAttribute("countTodayVisitors", countTodayVisitors);
 		
-		return "userTradeSearch";
+		return "userTradeSearch.tiles";
 	}
 	
 	@SuppressWarnings("unchecked")
