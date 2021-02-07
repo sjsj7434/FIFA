@@ -19,7 +19,7 @@
 		}
    		
    		function userDivision(division) {
-   			var result = "";
+   			let result = "";
    			
 			switch (division) {
 				case 800:
@@ -78,15 +78,13 @@
 			$("#sellTableTbody").empty();
 			$("#buyTableTbody").empty();
 			
-			var RegExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
-			var nickNameSearch = document.getElementById('nickNameSearch').value.replace(/ /gi, '');;
-			document.getElementById('nickName').value = nickNameSearch;
-			var nickName = document.getElementById('nickName').value;
+			const sendForm = document.getElementById("sendForm");
+			let RegExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
 			
-			var offset = document.getElementById('offset');
-			var limitSearch = document.getElementById('limitSearch');
-			var limit = document.getElementById('limit');
-			limit.value = limitSearch.value;
+			let nickNameCheck = sendForm.nickName.value.replace(/ /gi, '');
+			
+			let offset = sendForm.offset;
+			let limit = sendForm.limit;
 			
 			if(paging == 0){
 				offset.value = 0;
@@ -104,30 +102,35 @@
 				alert('에러 발생');
 			}
 			
-			if(nickName == ''){
+			if(nickNameCheck == ''){
 				document.getElementById("loading").innerHTML = "검색할 닉네임을 입력해주세요";
 				alert('검색할 닉네임을 입력해주세요');
 			}
 			else{
-				if(RegExp.test(nickName)){
+				if(RegExp.test(nickNameCheck)){
 					document.getElementById("loading").innerHTML = "특수문자는 입력할 수 없습니다";
 					alert('특수문자는 입력할 수 없습니다');
 				}
 				else{
-					var queryString = $("form[name=sendForm]").serialize();
 					$.ajax({
 				        url:"userTradeSearchAjax",
 				        type:'GET',
-				        data: queryString,
+				        data: {
+			        		nickName : sendForm.nickName.value,
+			        		offset : sendForm.offset.value,
+			        		limit : sendForm.limit.value,
+			        		searchWhere : window.location.pathname,
+							userIp : ip()//jsgetip.appspot.com, siteTop에서 로딩
+				        },
 				        success:function(data){
 				        	if(data.length === 0 || data[0].userFindByNickNameCode != '200'){
 				        		document.getElementById("loading").innerHTML = "정보가 없거나, 비정상적인 호출입니다";
 				        	}
 				        	else{
 				        		/* 유저 정보 테이블 - 시작 */
-				        		var length = data[1].length;
+				        		let length = data[1].length;
 				        		if(data[1][length-1].userMaxDivisionCode == 200){
-				        			var htmlUser = '';
+				        			let htmlUser = '';
 					        		htmlUser += "<tr>";
 					        			htmlUser += "<td>" + data[0].nickname + "</td>";
 					        			htmlUser += "<td>" + data[0].level + "</td>";
@@ -158,10 +161,10 @@
 					            
 					            /* 판매 테이블 - 시작 */
 					            if(data.length > 2){
-					            	var length = data[2].length;
+					            	let length = data[2].length;
 					            	if(data[2][length-1].userSellCode == 200){
-					            		var htmlSell = '';
-							            for(var i = 0; i < length-1; i++){
+					            		let htmlSell = '';
+							            for(let i = 0; i < length-1; i++){
 								            htmlSell += "<tr>";
 								            	htmlSell += "<td>" + (i+1) + "</td>";
 								            	if(data[3][i].playerVO == null){
@@ -180,7 +183,7 @@
 					            	}
 					            }
 					            else{
-					            	var htmlSell = '';
+					            	let htmlSell = '';
 							            htmlSell += "<tr>";
 							            	htmlSell += "<td>" + (1) + "</td>";
 							        		htmlSell += "<td>판매 정보가 없습니다</td>";
@@ -192,10 +195,10 @@
 					            
 					            /* 구매 테이블 - 시작 */
 					            if(data.length > 4){
-					            	var length = data[4].length;
+					            	let length = data[4].length;
 					            	if(data[4][length-1].userBuyCode == 200){
-					            		var htmlBuy = '';
-										for(var i = 0; i < length-1; i++){
+					            		let htmlBuy = '';
+										for(let i = 0; i < length-1; i++){
 								            htmlBuy += "<tr>";
 								            	htmlBuy += "<td>" + (i+1) + "</td>";
 								            	if(data[5][i].playerVO == null){
@@ -214,7 +217,7 @@
 					            	}
 					            }
 					            else{
-					            	var htmlBuy = '';
+					            	let htmlBuy = '';
 						            htmlBuy += "<tr>";
 						            	htmlBuy += "<td>" + (1) + "</td>";
 							            htmlBuy += "<td>구매 정보가 없습니다</td>";
@@ -268,6 +271,8 @@
 				<div style="margin-top:15px;" id="errorFormArea">
 					<div class="bd-example">
 						<form name="sendForm" id="sendForm" method="POST" onsubmit="return false">
+							<input type="hidden" name="offset" id="offset" value="0">
+							
 							<div class="form-group" style="text-align: left;">
 								<hr class="my-4">
 								<p class="lead"><strong>사용법</strong></p>
@@ -278,12 +283,20 @@
 								<p style="color: red;"><strong>데이터는 Nexon의 시스템에서 가져오므로 "거래날짜"가 동일하게 나올 수 있습니다</strong></p>
 							  	<hr class="my-4">
 							</div>
-							<input type="hidden" name="post_writer" id="post_writer">
+							
 							<div class="form-group" style="text-align: left;">
 								<label for="exampleFormControlInput1">유저 닉네임</label>
-								<div class="input-group mb-3">
-								  <input type="text" class="form-control" id="nickNameSearch" name="nickNameSearch" value="" placeholder="닉네임을 입력해주세요" maxlength="50" onkeypress="if(event.keyCode == 13){enterPress();}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+								<div class="input-group">
+									<input style="width:60%" type="text" class="form-control" id="nickName" name="nickName" value="" placeholder="닉네임을 입력해주세요" maxlength="50"
+								  		onkeypress="if(event.keyCode == 13){enterPress();}" aria-label="Recipient's username" aria-describedby="basic-addon2"/>
+								  	<select name="limit" id="limit" class="custom-select">
+											<option value="10">10개 표시</option>
+											<option value="25" selected="selected">25개 표시</option>
+											<option value="50">50개 표시</option>
+											<option value="100">100개 표시</option>
+										</select>
 								  	<div class="input-group-append">
+								  		
 								    	<button class="btn btn-outline-secondary" type="button" onclick="userTradeSearchAjax(0)">조회</button>
 									</div>
 								</div>
@@ -309,12 +322,6 @@
 		</div>
 		
 		<div>
-			<form name="sendForm" method="GET">
-				<input type="hidden" name="nickName" id="nickName" value="">
-				<input type="hidden" name="offset" id="offset" value="0">
-				<input type="hidden" name="limit" id="limit" value="10">
-			</form>
-
 			<div class="container">
 				<div class="row">
 					<div class="col align-self-start"></div>
@@ -324,12 +331,6 @@
 						<button type="button" class="btn btn-success"
 							onclick="userTradeSearchAjax(2)">다음</button>
 						<div style="padding-bottom: 20px;"></div>
-						<select id="limitSearch" class="custom-select">
-							<option value="10">10개 표시</option>
-							<option value="25" selected="selected">25개 표시</option>
-							<option value="50">50개 표시</option>
-							<option value="100">100개 표시</option>
-						</select>
 					</div>
 					<div class="col align-self-end"></div>
 				</div>

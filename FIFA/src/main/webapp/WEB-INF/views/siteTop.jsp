@@ -5,6 +5,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>siteTop</title>
+	<script type="text/javascript" src="http://jsgetip.appspot.com"></script>
 </head>
 <body>
 	<header>

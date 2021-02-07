@@ -13,7 +13,6 @@
 	<!--  View 지원을 제외한 bean을 설정, 예) Service / Repository(DAO) / DB/ log -->
 
 	<!-- Service 용 -->
-	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://rasberry1.cormbfdskqps.ap-northeast-2.rds.amazonaws.com:3306/aop_lsj" />
@@ -23,11 +22,10 @@
         <property name="validationQuery" value="SELECT 1" />
         <property name="testWhileIdle" value="true" />
 	</bean>
-	
 	<!-- Service 용 -->
 	
 	<!-- Test 용 -->
-<!-- 
+	<!-- 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://localhost:3306/springdb?serverTimezone=UTC" />
@@ -37,7 +35,7 @@
         <property name="validationQuery" value="SELECT 1" />
         <property name="testWhileIdle" value="true" />
 	</bean>
- -->
+	 -->
 	<!-- Test 용 -->
 	
 	<bean id="FO4visitorSessionDAOImpl" class="com.game.fifa.dao.FO4visitorSessionDAO.FO4visitorSessionDAOImpl"></bean>
@@ -56,5 +54,4 @@
 	</bean>
    
 	<context:component-scan base-package="com.game.fifa" /><!-- 이거 없어도 되는거 아니야? -->
-
 </beans>

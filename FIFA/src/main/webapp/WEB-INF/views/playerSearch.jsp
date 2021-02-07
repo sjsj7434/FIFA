@@ -83,66 +83,79 @@
 		function resizeGraph() {
 			window.dispatchEvent(new Event('resize'));
 		}
-
+		
 		function searchPlayer() {
+			document.getElementById("loading").innerHTML = "정보를 불러오고 있습니다...";
+			$("#playerTableTbody").empty();
+			
 			var RegExp = /[ \{\}\[\]\/?,;:|\)*~`!^\_+┼<>@\#$%&\'\"\\\(\=]/gi;
 			var playerName = document.getElementById('playerName').value.replace(/ /gi, '');;
 
 			if (playerName == '') {
 				alert('검색할 선수 이름을 입력해주세요');
+				document.getElementById("loading").innerHTML = "검색할 선수 이름을 입력해주세요";
 			} 
 			else {
 				if (RegExp.test(playerName)) {
 					alert('특수문자는 입력할 수 없습니다');
+					document.getElementById("loading").innerHTML = "특수문자는 입력할 수 없습니다";
 				}
 				else {
 					$.ajax({
 						url : "searchPlayer",
 						type : 'POST',
 						data : {
-							"playerName" : $('input[name=playerName]').val()
+							playerName : document.getElementById("playerName").value,
+							searchWhere : window.location.pathname,
+							userIp : ip()//jsgetip.appspot.com, siteTop에서 로딩
 						},
 						success : function(data) {
-							var bucket = 0;
-							var html = '';
-							for (var index = 0; index < data[0].length; index++) {
-								html += '<tr id="'+ data[0][index].id +'">';
-								html += '<td style="text-align: center; display: none;">' + (index + 1) + '</td>';
-								html += '<td style="text-align: left;"><img src="'+data[0][index].seasonimg+'" alt="시즌 이미지" />' + data[0][index].name + '</td>';
-								html += '<td style="text-align: left;">' + data[0][index].id + '</td>';
+							if(data[0].length === 0){
+								document.getElementById("loading").innerHTML = "정보가 없거나, 비정상적인 호출입니다";
+							}
+							else{
+								var bucket = 0;
+								var html = '';
+								for (var index = 0; index < data[0].length; index++) {
+									html += '<tr id="'+ data[0][index].id +'">';
+									html += '<td style="text-align: center; display: none;">' + (index + 1) + '</td>';
+									html += '<td style="text-align: left;"><img src="'+data[0][index].seasonimg+'" alt="시즌 이미지" />' + data[0][index].name + '</td>';
+									html += '<td style="text-align: left;">' + data[0][index].id + '</td>';
 
-								if ($("#selectedPlayerTableTbody").children().length == 0) {
-									html += '<td style="display: block; text-align: left;"><button type="button" class="btn btn-success" onclick="playerAdd(this)">추가</button></td>';
-									html += '<td style="display: none; text-align: left;"><button type="button" class="btn btn-outline-success" disabled>추가</button></td>';
-								} else if ($("#selectedPlayerTableTbody").children().length > 0) {
-									for (var i = 0; i < $("#selectedPlayerTableTbody").children().length; i++) {
-										if ($('#selectedPlayerTableTbody tr:eq(' + i + ')>td:eq(3)') .text() == (data[0][index].id)) {
-											html += '<td style="display: none; text-align: left;"><button type="button" class="btn btn-success" onclick="playerAdd(this)">추가</button></td>';
-											html += '<td style="display: block; text-align: left;"><button type="button" class="btn btn-outline-success" disabled>추가</button></td>';
-											bucket++;
-											break;
-										}
-									}
-									if (bucket == 0) {
+									if ($("#selectedPlayerTableTbody").children().length == 0) {
 										html += '<td style="display: block; text-align: left;"><button type="button" class="btn btn-success" onclick="playerAdd(this)">추가</button></td>';
 										html += '<td style="display: none; text-align: left;"><button type="button" class="btn btn-outline-success" disabled>추가</button></td>';
-									} else {
-										bucket = 0;
+									} else if ($("#selectedPlayerTableTbody").children().length > 0) {
+										for (var i = 0; i < $("#selectedPlayerTableTbody").children().length; i++) {
+											if ($('#selectedPlayerTableTbody tr:eq(' + i + ')>td:eq(3)') .text() == (data[0][index].id)) {
+												html += '<td style="display: none; text-align: left;"><button type="button" class="btn btn-success" onclick="playerAdd(this)">추가</button></td>';
+												html += '<td style="display: block; text-align: left;"><button type="button" class="btn btn-outline-success" disabled>추가</button></td>';
+												bucket++;
+												break;
+											}
+										}
+										if (bucket == 0) {
+											html += '<td style="display: block; text-align: left;"><button type="button" class="btn btn-success" onclick="playerAdd(this)">추가</button></td>';
+											html += '<td style="display: none; text-align: left;"><button type="button" class="btn btn-outline-success" disabled>추가</button></td>';
+										} else {
+											bucket = 0;
+										}
 									}
+									html += '<td style="display: none;">' + data[0][index].seasonimg + '</td>';
+									/*  html += '<td style="text-align: center;"><img src="'+data[0][index].playerActionShotImage+'" onerror="imageError(this)" alt="선수 이미지" /></td>'; */
+									html += '</tr>';
 								}
-								html += '<td style="display: none;">' + data[0][index].seasonimg + '</td>';
-								/*  html += '<td style="text-align: center;"><img src="'+data[0][index].playerActionShotImage+'" onerror="imageError(this)" alt="선수 이미지" /></td>'; */
-								html += '</tr>';
+								$("#playerTableTbody").empty();
+								$("#playerTableTbody").append(html);
+								
+								document.getElementById("loading").innerHTML = "";	
 							}
-							$("#playerTableTbody").empty();
-							$("#playerTableTbody").append(
-									html);
 						},
 						error : function(request, status, error) {
 							if (request.status == 500) {
-								alert("응답코드:" + request.status + "\n내용:" + "넥슨 서버 내부 에러");
+								document.getElementById("loading").innerHTML = "응답코드:" + request.status + "\n내용:" + "넥슨 서버 내부 에러";
 							} else {
-								alert("응답코드:" + request.status + "\n내용:" + "에러가 발생했습니다")
+								document.getElementById("loading").innerHTML = "응답코드:" + request.status + "\n내용:" + "에러가 발생했습니다";
 							}
 						}
 					});
@@ -295,7 +308,7 @@
 										<option value="20">RF</option>
 										<option value="21">CF</option>
 										<option value="22">LF</option>
-										<option value="23" selected="selected">RW</option>
+										<option value="23">RW</option>
 										<option value="24">RS</option>
 										<option value="25">ST</option>
 										<option value="26">LS</option>
@@ -315,6 +328,8 @@
 				</div>
 			</div>
 		</div>
+		
+		<div id="loading" class="col align-self-center" style="font-size: 20px;"></div>
 
 		<form name="sendForm" onsubmit="return false">
 			<div class="row" style="width:48%; padding-left: 150px;">

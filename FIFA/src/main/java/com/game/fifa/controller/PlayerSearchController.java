@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.game.fifa.service.FO4commonService.FO4commonService;
 import com.game.fifa.service.FO4playerService.FO4playerService;
 import com.game.fifa.service.FO4visitorSessionService.FO4visitorSessionService;
+import com.game.fifa.vo.FO4commonVO;
 import com.game.fifa.vo.FO4playerVO;
 
 @Controller
@@ -32,6 +35,9 @@ public class PlayerSearchController {
 	FO4visitorSessionService visitorSessionService;
 	@Autowired
 	private FO4playerService playerService;
+	@Autowired
+	FO4commonService commonService;
+	
 	private static final String Authorization = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiNjU0NDcxODA3IiwiYXV0aF9pZCI6IjIiLCJ0b2tlbl90eXBlIjoiQWNjZXNzVG9rZW4iLCJzZXJ2aWNlX2lkIjoiNDMwMDExNDgxIiwiWC1BcHAtUmF0ZS1MaW1pdCI6IjIwMDAwOjEwIiwibmJmIjoxNTc0NjQ5MDE2LCJleHAiOjE2Mzc3MjEwMTYsImlhdCI6MTU3NDY0OTAxNn0.ofK1h46pzjKcW1-0fwRfv282vEShQHeaLPOr0pIQs8o";
 
 	@RequestMapping(value = "/playerSearch", method = RequestMethod.GET)
@@ -121,6 +127,17 @@ public class PlayerSearchController {
 	public JSONArray searchPlayer(Model model, HttpServletRequest request) throws IOException {
 		String playerName = request.getParameter("playerName");
 		playerName = playerName.replaceAll(" ", "");
+		
+		// 사용자 검색 Log
+		String searchWhere = request.getParameter("searchWhere");
+		String userIp = request.getParameter("userIp");
+		FO4commonVO commonVO = new FO4commonVO();
+		commonVO.setSearch_date(new Timestamp(System.currentTimeMillis()));
+		commonVO.setSearch_key(playerName);
+		commonVO.setSearch_where(searchWhere);
+		commonVO.setUser_ip(userIp);
+		commonService.insertSearchLog(commonVO);
+		// 사용자 검색 Log
 		
 		List<FO4playerVO> playerList = playerService.getPlayer(playerName);
 		

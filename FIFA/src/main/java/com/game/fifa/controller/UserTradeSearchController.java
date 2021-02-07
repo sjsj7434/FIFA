@@ -1,6 +1,7 @@
 package com.game.fifa.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.game.fifa.customClass.UserInfoAPI;
+import com.game.fifa.service.FO4commonService.FO4commonService;
 import com.game.fifa.service.FO4playerService.FO4playerService;
 import com.game.fifa.service.FO4visitorSessionService.FO4visitorSessionService;
+import com.game.fifa.vo.FO4commonVO;
 import com.game.fifa.vo.FO4playerVO;
 
 @Controller
@@ -26,6 +29,8 @@ public class UserTradeSearchController {
 	FO4visitorSessionService visitorSessionService;
 	@Autowired
 	private FO4playerService playerService;
+	@Autowired
+	FO4commonService commonService;
 
 	@RequestMapping(value = "/userTradeSearch", method = RequestMethod.GET)
 	public String userSearch(Model model) {
@@ -44,6 +49,17 @@ public class UserTradeSearchController {
 		String nickName = request.getParameter("nickName");
 		int offset = Integer.parseInt(request.getParameter("offset"));
 		int limit = Integer.parseInt(request.getParameter("limit"));
+		
+		// 사용자 검색 Log
+		String searchWhere = request.getParameter("searchWhere");
+		String userIp = request.getParameter("userIp");
+		FO4commonVO commonVO = new FO4commonVO();
+		commonVO.setSearch_date(new Timestamp(System.currentTimeMillis()));
+		commonVO.setSearch_key(nickName);
+		commonVO.setSearch_where(searchWhere);
+		commonVO.setUser_ip(userIp);
+		commonService.insertSearchLog(commonVO);
+		// 사용자 검색 Log
 		
 		JSONArray jsonArray = new JSONArray();
 		

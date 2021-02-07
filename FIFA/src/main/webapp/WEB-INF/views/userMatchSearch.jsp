@@ -6,9 +6,9 @@
 <html>
 <head>
     <script type="text/javascript">
-	    var dataGlobal = null;
-	    var playerGlobal0 = null;
-	    var playerGlobal1 = null;
+	    let dataGlobal = null;
+	    let playerGlobal0 = null;
+	    let playerGlobal1 = null;
     	
    		function numberFormat(inputNumber) {
     	   return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -23,7 +23,7 @@
 		}
    		
    		function userDivision(division) {
-   			var result = "";
+   			let result = "";
    			
 			switch (division) {
 				case 800:
@@ -81,19 +81,13 @@
 			document.getElementById("loading").innerHTML = "정보를 불러오고 있습니다...";
 			$("#matchTableTbody").empty();
 			
-			var RegExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
-			var nickNameSearch = document.getElementById('nickNameSearch').value.replace(/ /gi, '');;
-			document.getElementById('nickName').value = nickNameSearch;
-			var nickName = document.getElementById('nickName').value;
-			var matchType = document.getElementById('matchType').value;
+			const sendForm = document.getElementById("sendForm");
+			let RegExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
 			
-			var matchtype = document.getElementById('matchtype');
-			var offset = document.getElementById('offset');
-			var limitSearch = document.getElementById('limitSearch');
-			var limit = document.getElementById('limit');
-			
-			matchtype.value = matchType;
-			limit.value = limitSearch.value;
+			let nickNameCheck = sendForm.nickName.value.replace(/ /gi, '');
+			let matchType = sendForm.matchType;
+			let offset = sendForm.offset;
+			let limit = sendForm.limit;
 			
 			if(paging == 0){
 				offset.value = 0;
@@ -111,31 +105,37 @@
 				alert('에러 발생');
 			}
 			
-			if(nickName == ''){
+			if(nickNameCheck == ''){
 				document.getElementById("loading").innerHTML = "검색할 닉네임을 입력해주세요";
 				alert('검색할 닉네임을 입력해주세요');
 			}
 			else{
-				if(RegExp.test(nickName)){
+				if(RegExp.test(nickNameCheck)){
 					document.getElementById("loading").innerHTML = "특수문자는 입력할 수 없습니다";
 					alert('특수문자는 입력할 수 없습니다');
 				}
-				else{					
-					var queryString = $("form[name=sendForm]").serialize();
+				else{
 					$.ajax({
 				        url:"userMatchSearchAjax",
 				        type:'GET',
-				        data: queryString,
+				        data: {
+			        		nickName : sendForm.nickName.value,
+			        		matchType : sendForm.matchType.value,
+			        		offset : sendForm.offset.value,
+			        		limit : sendForm.limit.value,
+			        		searchWhere : window.location.pathname,
+							userIp : ip()//jsgetip.appspot.com, siteTop에서 로딩
+				        },
 				        success:function(data){
 				        	dataGlobal = data;
-				        	if(data[0].userFindByNickNameCode != '200'){
+				        	if(data.length === 0 || data[0].userFindByNickNameCode != '200'){
 				        		document.getElementById("loading").innerHTML = "정보가 없거나, 비정상적인 호출입니다";
 				        	}
 				        	else{
 				        		/* 유저 정보 테이블 - 시작 */
-				        		var length = data[1].length;
+				        		let length = data[1].length;
 				        		if(data[1][length-1].userMaxDivisionCode == 200){
-				        			var htmlUser = '';
+				        			let htmlUser = '';
 					        		htmlUser += "<tr>";
 					        			htmlUser += "<td>" + data[0].nickname + "</td>";
 					        			htmlUser += "<td>" + data[0].level + "</td>";
@@ -166,10 +166,10 @@
 					            
 					            /* 경기 기록 테이블 - 시작 */
 					            if(data.length > 2){
-					            	var length = data[2].length;
+					            	let length = data[2].length;
 					            	if(data[2][length-1].findMatchByAccessIdCode == 200){
-					            		var htmlMatch = '';
-							            for(var i = 0; i < length-1; i++){
+					            		let htmlMatch = '';
+							            for(let i = 0; i < length-1; i++){
 							            	if(data[0].accessId == data[3][i].matchInfo[0].accessId){
 							            		htmlMatch += '<tr onclick="userMatchClick(' + i + ')" style="cursor:pointer;">';
 									            	htmlMatch += "<td>" + data[3][i].matchDate.replace('T', " ") + "</td>";
@@ -244,7 +244,7 @@
 					            	}
 					            }
 					            else{
-					            	var htmlMatch = '';
+					            	let htmlMatch = '';
 							            htmlMatch += "<tr>";
 							            	htmlMatch += "<td>" + (1) + "</td>";
 							        		htmlMatch += "<td>경기 정보가 없습니다</td>";
@@ -390,18 +390,18 @@
 		}
 		
 		function playerInfo(number) {
-			var playerList = {};
+			let playerList = {};
 			
 			if(number == 0){
 				if(playerGlobal0 != null){
-					for(var index = 0; index < playerGlobal0.length; index++){
+					for(let index = 0; index < playerGlobal0.length; index++){
 						playerList[index] = playerGlobal0[index].spId;
 					}
 				}
 			}
 			else{
 				if(playerGlobal1 != null){
-					for(var index = 0; index < playerGlobal1.length; index++){
+					for(let index = 0; index < playerGlobal1.length; index++){
 						playerList[index] = playerGlobal1[index].spId;
 					}
 				}
@@ -449,7 +449,7 @@
 					$("#LW").html('');
 					
 					if(playerGlobal0 != null && number == 0){
-						for(var index = 0; index < data.length; index++){
+						for(let index = 0; index < data.length; index++){
 							if(playerGlobal0[index].spPosition != 28){
 								switch (playerGlobal0[index].spPosition) {
 								case 0:
@@ -559,7 +559,7 @@
 						}
 					}
 					if(playerGlobal1 != null && number == 1){
-						for(var index = 0; index < data.length; index++){
+						for(let index = 0; index < data.length; index++){
 							if(playerGlobal1[index].spPosition != 28){
 								switch (playerGlobal1[index].spPosition) {
 								case 0:
@@ -702,6 +702,8 @@
 					<div class="bd-example">
 						<!-- <grammarly-extension style="position: absolute; top: -3.1875px; left: -3.1875px; pointer-events: none;" class="_1KJtL"></grammarly-extension> -->
 						<form name="sendForm" id="sendForm" method="POST" onsubmit="return false">
+							<input type="hidden" name="offset" id="offset" value="0">
+							
 							<div class="form-group" style="text-align: left;">
 								<hr class="my-4">
 								<p class="lead"><strong>사용법</strong></p>
@@ -717,13 +719,19 @@
 							<div class="form-group" style="text-align: left;">
 								<label for="exampleFormControlInput1">유저 닉네임</label>
 								<div class="input-group">
-									<input type="text" class="form-control" id="nickNameSearch" name="nickNameSearch" value="" placeholder="닉네임을 입력해주세요" maxlength="50"
-								  		onkeypress="if(event.keyCode == 13){enterPress();}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+									<input style="width:60%" type="text" class="form-control" id="nickName" name="nickName" value="" placeholder="닉네임을 입력해주세요" maxlength="50"
+								  		onkeypress="if(event.keyCode == 13){enterPress();}" aria-label="Recipient's username" aria-describedby="basic-addon2"/>
+								  	<select id="matchType" class="custom-select">
+										<option value="50" selected="selected">공식 경기</option>
+										<option value="52">감독 모드</option>
+									</select>
+									<select name="limit" id="limit" class="custom-select">
+										<option value="10" selected="selected">10개 표시</option>
+										<option value="25">25개 표시</option>
+										<option value="50">50개 표시</option>
+										<option value="100">100개 표시</option>
+									</select>
 								  	<div class="input-group-append">
-								  		<select id="matchType" class="custom-select">
-											<option value="50" selected="selected">공식 경기</option>
-											<option value="52">감독 모드</option>
-										</select>
 								    	<button class="btn btn-outline-secondary" type="button" onclick="userSearchAjax(0)">SEARCH!</button>
 									</div>
 								</div>
@@ -749,13 +757,6 @@
 		</div>
 		
 		<div>
-			<form name="sendForm" method="GET">
-				<input type="hidden" name="nickName" id="nickName" value="">
-				<input type="hidden" name="matchtype" id="matchtype" value="50">
-				<input type="hidden" name="offset" id="offset" value="0">
-				<input type="hidden" name="limit" id="limit" value="100">
-			</form>
-			
 			<div class="container">
 			  <div class="row">
 			    <div class="col align-self-start"> </div>
@@ -763,12 +764,7 @@
 			    	<button type="button" class="btn btn-success" onclick="userSearchAjax(1)"> 이전 </button>
 					<button type="button" class="btn btn-success" onclick="userSearchAjax(2)"> 다음 </button>
 					<div style="padding-bottom: 20px;"></div>
-					<select id="limitSearch" class="custom-select">
-						<option value="10" selected="selected">10개 표시</option>
-						<option value="25">25개 표시</option>
-						<option value="50">50개 표시</option>
-						<option value="100">100개 표시</option>
-					</select>
+					
 			    </div>
 			    <div class="col align-self-end"> </div>
 			  </div>

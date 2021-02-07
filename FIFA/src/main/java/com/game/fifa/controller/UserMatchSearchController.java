@@ -1,6 +1,7 @@
 package com.game.fifa.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.game.fifa.customClass.MatchInfoAPI;
 import com.game.fifa.customClass.UserInfoAPI;
+import com.game.fifa.service.FO4commonService.FO4commonService;
 import com.game.fifa.service.FO4playerService.FO4playerService;
 import com.game.fifa.service.FO4visitorSessionService.FO4visitorSessionService;
+import com.game.fifa.vo.FO4commonVO;
 import com.game.fifa.vo.FO4playerVO;
 
 @Controller
@@ -28,6 +31,8 @@ public class UserMatchSearchController {
 	FO4visitorSessionService visitorSessionService;
 	@Autowired
 	FO4playerService playerService;
+	@Autowired
+	FO4commonService commonService;
 	
 	@RequestMapping(value = "/userMatchSearch", method = RequestMethod.GET)
 	public String userMatchSearch(Model model) {
@@ -44,9 +49,20 @@ public class UserMatchSearchController {
 	@ResponseBody
 	public JSONArray userSearchAjax(Model model, HttpServletRequest request) throws IOException, ParseException {
 		String nickName = request.getParameter("nickName");
-		String matchtype = request.getParameter("matchtype");
+		String matchType = request.getParameter("matchType");
 		int offset = Integer.parseInt(request.getParameter("offset"));
 		int limit = Integer.parseInt(request.getParameter("limit"));
+		
+		// 사용자 검색 Log
+		String searchWhere = request.getParameter("searchWhere");
+		String userIp = request.getParameter("userIp");
+		FO4commonVO commonVO = new FO4commonVO();
+		commonVO.setSearch_date(new Timestamp(System.currentTimeMillis()));
+		commonVO.setSearch_key(nickName);
+		commonVO.setSearch_where(searchWhere);
+		commonVO.setUser_ip(userIp);
+		commonService.insertSearchLog(commonVO);
+		// 사용자 검색 Log
 		
 		JSONArray jsonArray = new JSONArray();
 		UserInfoAPI userInfoAPI = new UserInfoAPI();
@@ -63,10 +79,20 @@ public class UserMatchSearchController {
 			JSONArray json_userMaxDivision = userInfoAPI.userMaxDivision(accessId);
 			jsonArray.add(json_userMaxDivision);
 			
-			JSONArray json_findMatchByAccessId = matchInfoAPI.findMatchByAccessId(accessId, matchtype, offset, limit);
+			JSONArray json_findMatchByAccessId = matchInfoAPI.findMatchByAccessId(accessId, matchType, offset, limit);
 			jsonArray.add(json_findMatchByAccessId);
 			
-			JSONObject jsonLastLine = (JSONObject) json_findMatchByAccessId.get(limit);
+			JSONObject jsonLastLine;
+			if(json_findMatchByAccessId.size() == 1) {
+				jsonLastLine = (JSONObject) json_findMatchByAccessId.get(0);
+			}
+			else if(json_findMatchByAccessId.size() > 1) {
+				jsonLastLine = (JSONObject) json_findMatchByAccessId.get(json_findMatchByAccessId.size()-1);
+			}
+			else {
+				jsonLastLine = (JSONObject) json_findMatchByAccessId.get(limit);
+			}
+			
 			int findMatchByAccessIdCode = (Integer) jsonLastLine.get("findMatchByAccessIdCode");
 			if(findMatchByAccessIdCode == 200) {
 				JSONArray json_findMatchByAccessId2 = new JSONArray();
