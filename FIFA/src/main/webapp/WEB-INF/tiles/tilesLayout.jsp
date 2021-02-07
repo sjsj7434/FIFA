@@ -24,8 +24,14 @@
 	<!-- Open  Graph -->
 	
 	<!-- google adsense -->
+	<!-- 
 	<script data-ad-client="ca-pub-4183410804231720" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	 -->
 	<!-- google adsense -->
+	
+	<!-- kakao AdFit -->
+	<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+	<!-- kakao AdFit -->
 	
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -41,11 +47,25 @@
 	<header id="siteTop">
 		<tiles:insertAttribute name="siteTop"/>
 	</header>
+	
+	<div id="kakaoAdFit">
+		<ins class="kakao_ad_area" style="display:none;" 
+		data-ad-unit = "DAN-igdqSY9AvDy013LG" 
+		data-ad-width = "320" 
+		data-ad-height = "100"
+		data-ad-onfail = "onFailKakaoAd">
+		</ins>
+		<script>
+			function onFailKakaoAd(){
+				console.log('kakao 광고 차단 됨...');
+			}
+		</script>
+	</div>
 
 	<div id="content">
 		<tiles:insertAttribute name="content"/>
 	</div>
- 
+	
 	<footer id="siteBottom">
 		<tiles:insertAttribute name="siteBottom"/>
 	</footer>
