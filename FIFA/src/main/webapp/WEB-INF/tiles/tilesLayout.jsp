@@ -48,7 +48,7 @@
 		<tiles:insertAttribute name="siteTop"/>
 	</header>
 	
-	<div id="kakaoAdFit">
+	<div id="kakaoAdFit" style="padding-top:30px;">
 		<ins class="kakao_ad_area" style="display:none;" 
 		data-ad-unit = "DAN-igdqSY9AvDy013LG" 
 		data-ad-width = "320" 
